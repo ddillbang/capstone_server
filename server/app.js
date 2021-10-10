@@ -53,15 +53,16 @@ app.post('/signupX', function(req, res){
     console.log(req.body);
     
     dbConnect.connect();
-    connection.query('insert into USERS values(?, ?)', [req.body.user_ID , req.body.user_PW1] , function(error, result, fields){
+    dbConnect.query('insert into USERS values(?, ?)', [req.body.user_ID , req.body.user_PW1] , function(error, result, fields){
         if(error){
                 console.log(error);
         }
         console.log(result);
     });
+    dbConnect.end();
 });
 
 app.listen(3000, function()
 {
-    console.log("서버가동");    
+    console.log("서버가동");
 })
