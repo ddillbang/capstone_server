@@ -1,0 +1,41 @@
+<style>
+.search {
+  display: grid;
+  padding-bottom: 0px;
+}
+
+.search-bar {
+  border: 1px solid #009900;
+  float: left;
+  font-size: 13px;
+  margin: 10px 0 0 25px;
+  padding: 5px;
+  width: 140px;
+}
+
+.search-button {
+  background: #009900;
+  border: 1px solid #009900;
+  border-left: none; /* Prevent double borders */
+  color: white;
+  cursor: pointer;	
+  float: left;
+  font-size: 13px;
+  margin: 10px 0 25px 0;
+  width: 60px;
+  padding: 5px;
+}
+
+.search-button:hover {
+	  background: #006600;
+}
+
+.search-form {
+  height: 45px;
+}
+</style>
+
+<form action="search" method="get" class="search-form">
+	<input type="text" class="search-bar" name="query" placeholder="검색어를 입력하세요.">
+	<input type="submit" class="search-button" value="Search" >
+</form>
