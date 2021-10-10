@@ -1,9 +1,17 @@
 var mysql = require('mysql');
-var connection = mysql.createConnection({
+var db = {
+        connectionLimit : 10,
         host : 'localhost',
         user : 'root',
         password : 'audtjq123',
         database : 'server'
-});
+};
 
-module.exports = connection;
+var dbp = mysql.createPool(db);
+
+function getConnection() {
+        return dbp;
+        }
+
+
+module.exports = getConnection();

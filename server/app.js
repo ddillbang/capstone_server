@@ -2,8 +2,7 @@ var express = require('express');
 var app = express();
 var ejs = require('ejs');
 const request = require('request');
-const dbConnect = require('./db');
-const { connect } = require('./db');
+const db = require('./db');
 app.use('/static', express.static(__dirname + '/public'))
 
 app.set('view engine', 'ejs');
@@ -11,6 +10,8 @@ app.set('views', './views');
 app.engine('html', ejs.renderFile);
 app.use(express.json()); 
 app.use(express.urlencoded( {extended : false } ));  
+
+
 
 const CLIENT_ID = 'W12PsIX84oIcyfufTCCG';
 const CLIENT_SECRET = 'jO2h2HTVCh';
@@ -52,14 +53,16 @@ app.get('/signup', function(req,res){
 app.post('/signupX', function(req, res){
     console.log(req.body);
     
-    dbConnect.connect();
-    dbConnect.query('insert into USERS values(?, ?)', [req.body.user_ID , req.body.user_PW1] , function(error, result, fields){
+
+    db.query('insert into USERS values(?, ?)', [req.body.user_ID , req.body.user_PW1] , function(error, result, fields){
         if(error){
                 console.log(error);
         }
         console.log(result);
     });
-    dbConnect.end();
+
+    res.redirect('/');
+
 });
 
 app.listen(3000, function()
