@@ -1,9 +1,9 @@
 var express = require('express');
 var app = express();
 var ejs = require('ejs');
-//const { request } = require('express');
 const request = require('request');
-
+const dbConnect = require('./db');
+const { connect } = require('./db');
 app.use('/static', express.static(__dirname + '/public'))
 
 app.set('view engine', 'ejs');
@@ -44,7 +44,22 @@ app.get('/search', (req,res) =>{
     
 })
 
-
+//sign up 내가함(10.10)
+app.get('/signup', function(req,res){
+    res.render('sign_up.html'); 
+});
+//sign up request thdaudtjq(10.10)
+app.post('/signupX', function(req, res){
+    console.log(req.body);
+    
+    dbConnect.connect();
+    connection.query('insert into USERS values(?, ?)', [req.body.user_ID , req.body.user_PW1] , function(error, result, fields){
+        if(error){
+                console.log(error);
+        }
+        console.log(result);
+    });
+});
 
 app.listen(3000, function()
 {
