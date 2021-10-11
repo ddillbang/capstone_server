@@ -2,8 +2,8 @@ var mysql = require('mysql');
 var db = {
         connectionLimit : 10,
         host : 'localhost',
-        user : 'root',
-        password : 'audtjq123',
+        user : 'nodejs',
+        password : '1111',
         database : 'server'
 };
 
