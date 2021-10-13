@@ -11,7 +11,6 @@ var dbp = mysql.createPool(db);
 
 function getConnection() {
         return dbp;
-        }
-
+}
 
 module.exports = getConnection();
