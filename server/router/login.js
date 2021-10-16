@@ -47,10 +47,11 @@ router.post('/signin', function(req, res){
             return res.send('check your id or password <a herf="/signin">signin</a>');
         }
         else{ //로그인 성공
-            console.log(req.session);//testcode
-            req.session.uid = uid; //create session
-            console.log(req.session);//testcode
-            res.redirect('/login');//test page
+            req.session.user = {
+                id : uid,
+                authorized : true
+            }
+            res.redirect('/login');
         }
     });
 });

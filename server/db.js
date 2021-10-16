@@ -14,3 +14,4 @@ function getConnection() {
 }
 
 module.exports = getConnection();
+module.exports.d = db;

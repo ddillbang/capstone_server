@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+<title>Bootstrap Example</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+<div class="container">
+<h2>상품테이블</h2>
+
+<a href="/insert">추가하기</a>
+<br>
+<br>
+<p>상품테이블 목록입니다.</p>
+
+<table class="table table-striped">
+<thead>
+<tr>
+<th>아이디</th>
+<th>상품명</th>
+<th>수정</th>
+<th>삭제</th>
+</tr>
+</thead>
+<tbody>
+
+<% data.forEach(function (item,index){ %>
+<tr>
+<td>
+<%= item.u_id %>
+</td>
+<td>
+<a href='/detail/<%= item.id %>'><%= item.title %></a>
+</td>
+<td>
+<a href="/delete/<%= item.id %>">삭제</a>
+</td>
+<td>
+<a href="/edit/<%= item.id %>">수정</a>
+</td>
+</tr>
+<% })%>
+</tbody>
+</table>
+</div>
+
+
+<br>
+<br>
+
+
+<div class="container">
+<ul class="pager">
+
+
+
+<%
+var curSet = paging.curSet
+var endPage = paging.endPage
+var startPage = paging.startPage
+var totalSet = paging.totalSet
+var totalPage = paging.totalPage
+var page_list_size = paging.page_list_size
+var page_size = paging.page_size
+var curPage = paging.curPage
+%>
+
+
+<%
+if(curSet > 1){
+%>
+
+<li value=(startPage -1) class="previous">
+<a href='/paging/<%= ( startPage - 1) %>'>이전페이지</a>
+</li>
+
+<%
+}
+%>
+
+
+<%
+for(var i = startPage; i <= endPage; i++){
+if(i > totalPage){break;}
+
+if(i == curPage){
+%>
+<li value=<%= i %> class='' >
+<a href='/paging/<%= i %>'>
+<%= i %>
+</a>
+</li>
+
+<%
+}else{
+%>
+
+<li value=<%= i %> class='active' >
+<a href='/paging/<%= i %>'>
+<%= i %>
+</a>
+</li>
+
+
+<%
+}
+%>
+
+<%
+}
+%>
+
+<%
+if(curSet < totalSet){
+%>
+<li value=( endPage + 1) class="next">
+<a href='/paging/<%= ( endPage + 1) %>'>다음페이지</a>
+</li>
+<%
+}
+%>
+
+</ul>
+</div>
+
+<br>
+<br>
+
+</body>
+
+</html>

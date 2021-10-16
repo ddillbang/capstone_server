@@ -1,0 +1,8 @@
+create table board(
+     idx int NOT NULL AUTO_INCREMENT,
+     u_id varchar(20) NOT NULL,
+     title varchar(20) NOT NULL,
+     content text,
+     date TIMESTAMP DEFAULT NOW(),
+     PRIMARY KEY(idx)
+     );
