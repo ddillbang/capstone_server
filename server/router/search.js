@@ -10,7 +10,7 @@ router.get('/search', (req,res) =>{
     const option = {
    
         query : req.query.query,
-        display : 10
+        display : 100
     
 }
 
@@ -24,7 +24,6 @@ router.get('/search', (req,res) =>{
     }, function(err, res2, body)
     {
         let json = JSON.parse(body)
-        console.log(json);
         res.render('search.html', {data : json})
     })
 

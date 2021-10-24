@@ -9,6 +9,7 @@ const home = require('./router/home.js');
 const search = require('./router/search.js'); 
 const login = require('./router/login.js'); 
 const board = require('./router/board.js'); 
+const detail = require('./router/detail.js'); 
 
 app.use(session({
     secret: '1234@', //it can be same as cookie setting
@@ -21,6 +22,7 @@ app.use(home);
 app.use(search);
 app.use(login);
 app.use(board);
+app.use(detail);
 app.use('/static', express.static(__dirname + '/public'))
 
 
