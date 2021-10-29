@@ -1,0 +1,14 @@
+
+알라딘 상품 검색 API
+
+ttbkey = ttbtimber31539001
+
+
+검색 예시 :
+
+http://www.aladin.co.kr/ttb/api/ItemLookUp.aspx?ttbkey=ttbtimber31539001
+&itemIdType=ISBN13&ItemId=9788972756194&output=xml&Version=20131101&OptResult=ebookList,usedList
+
+추후 출판사 제공 상품소개 내용 검색 권한(OptResult) 받으면
+
+위 주소 내용에 ,fullDescription2  붙여서 쓰면 됨
