@@ -6,7 +6,6 @@ var MysqlStore = require('express-mysql-session')(session);
 const db = require('./db');
 
 var server = require('http').createServer(app);
-var io = require('./router/chat.js')(server);
 
 
 const home = require('./router/home.js'); 
@@ -15,6 +14,7 @@ const login = require('./router/login.js');
 const board = require('./router/board.js'); 
 const detail = require('./router/detail.js'); 
 const chat = require('./router/chat.js');
+const chatio = require('./router/chatio.js')(server);
 
 app.use(session({
     secret: '1234@', //it can be same as cookie setting
@@ -35,7 +35,6 @@ app.use(chat);
 app.set('view engine', 'ejs');
 app.set('views', './views');
 app.engine('html', ejs.renderFile);
-
 
 
 
