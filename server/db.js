@@ -2,9 +2,9 @@ var mysql = require('mysql');
 var db = {
         connectionLimit : 10,
         host : 'localhost',
-        user : 'root',
-        password : 'rhleh3060',
-        database : 'test'
+        user : 'nodejs',
+        password : '1111',
+        database : 'servers'
 };
 
 var dbp = mysql.createPool(db);
