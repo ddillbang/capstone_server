@@ -4,7 +4,7 @@ var db = {
         host : 'localhost',
         user : 'nodejs',
         password : '1111',
-        database : 'servers'
+        database : 'server'
 };
 
 var dbp = mysql.createPool(db);

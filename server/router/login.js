@@ -1,5 +1,4 @@
 const express = require('express');
-const session = require('express-session');
 const router = express.Router();
 const db = require('../db');
 
@@ -51,19 +50,34 @@ router.post('/signin', function(req, res){
                 id : uid,
                 authorized : true
             }
-            res.redirect('/login');
+            // console.log(req.session); // testcode
+            req.session.save(function(){
+                res.redirect('/login');
+            })
         }
     });
 });
 
 //testcode
 router.get('/login', function(req, res){
-    if(req.session.uid == undefined){
+    if(req.session.user == undefined){
         res.send('please login <a herf="/signin">signin</a>');
     }
     else{
-        res.send('welcome' + req.session.uid);
+        res.send('welcome ' + req.session.user.id);
     }
 });
+
+router.get('/logout', function(req, res){
+    if(req.session.user == undefined){
+        res.redirect('/');
+    }
+    else{
+        req.session.destroy(function(){
+            console.log('session distroied');
+            res.redirect('/');
+        })
+    }
+})
 
 module.exports = router;

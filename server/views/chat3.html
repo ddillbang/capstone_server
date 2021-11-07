@@ -10,6 +10,7 @@
     </ul>
 
     <form id="msgform">
+        <input id="receiver" autocomplete="off" type="text">
         <input id="msginput" autocomplete="off" type="text">
         <button type="submit">전송</button>
     </form>
@@ -18,6 +19,11 @@
     <script>
         var socket = io();
         var msgform = document.getElementById('msgform');
+
+        socket.emit('join', function() {
+            
+        })
+        
         // socket.on 함수로 서버에서 전달하는 신호를 수신
         socket.on('usercount', (count) => {
             var userCounter = document.getElementById('usercount');
@@ -34,10 +40,14 @@
 
         msgform.onsubmit = (e) => {
             e.preventDefault();
+            var receiver = document.getElementById('receiver');
             var msginput = document.getElementById('msginput');
-
             // socket.emit으로 서버에 신호를 전달
-            socket.emit('message', msginput.value);
+            var form = {
+                receiver : receiver.value,
+                msg : msginput.value
+            };
+            socket.emit('message', form);
 
             msginput.value = "";
         };

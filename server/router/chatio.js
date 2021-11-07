@@ -1,8 +1,16 @@
+const session = require('express-session');
+const iosoc = require('express-socket.io-session');
+var MysqlStore = require('express-mysql-session')(session);
+const db = require('../db');
+
 module.exports = function(server){
     var io = require('socket.io')(server);
     io.on('connection', (socket) => {   //연결이 들어오면 실행되는 이벤트
-        // socket 변수에는 실행 시점에 연결한 상대와 연결된 소켓의 객체가 들어있다.
         
+        // db.query('select data from sessions where session_id = ?', [], function(err, result){
+            
+        // })
+
         //socket.emit으로 현재 연결한 상대에게 신호를 보낼 수 있다.
         socket.emit('usercount', io.engine.clientsCount);
 
