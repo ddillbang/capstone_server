@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>obeta</title>
+
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+    <div class="header">
+        <h1>OWNBOOK</h1>
+        <ul class="menu">
+            <li><a href="/"></a>HOME</li>
+            <li><a href=""></a>CHEAT</li>
+            <li><a href="/signin">LOGIN</li></a>            
+            <!-- <li><a href=""></a>메뉴4</li>                        -->
+        </ul>
+    </div>
+    <script>
+        function say(){
+            var textbox = document.getElementById("searchtext");
+
+            if(textbox != null){
+                alert(textbox.value + "를 검색하셨습니다.");
+            }
+
+        }
+    </script>
+    <div class = "search">
+        <div class = "searchin">
+            [ 검색 ]
+            <form action="search" method="get" class="search-form">
+            <input type="text" id = "searchtext" name="query"> <!-- onchange = "alert('Hi')"-->
+            <input type="submit" class="search-button" value="Search" >
+            </form>
+
+            <!-- document.querySelector('body').style.backgroundColor='black'; -->
+            <!-- document.querySelector('body').style.color='white';-->
+
+            
+            
+            
+            
+
+        </div>
+    </div>
+
+    <div class="container">
+        
+        <div class="content1">
+            내용?
+        </div>
+        <div class="content2"></div>
+    </div>
+
+    <div class="footer">
+        
+    </div>
+</body>
+</html>

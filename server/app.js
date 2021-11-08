@@ -4,6 +4,7 @@ var ejs = require('ejs');
 var session = require('express-session'); //session module;
 var MysqlStore = require('express-mysql-session')(session);
 const db = require('./db');
+const bodyPaser= require('body-parser');
 
 var server = require('http').createServer(app);
 
@@ -29,7 +30,12 @@ app.use(login);
 app.use(board);
 app.use(detail);
 app.use('/static', express.static(__dirname + '/public'))
+app.use('/users', express.static('uploads'));
 app.use(chat);
+
+app.use(bodyPaser.urlencoded({limit: '5mb', extended: false, parameterLimit: 10000}));
+
+
 
 
 app.set('view engine', 'ejs');

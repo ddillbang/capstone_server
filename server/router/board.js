@@ -1,7 +1,30 @@
 const express = require('express');
 const session = require('express-session');
+const { getConnection } = require('../db');
 const router = express.Router();
 const db = require('../db');
+const multer = require('multer');
+
+
+var storage = multer.diskStorage({
+    destination : function (req,file,cb)
+    {
+        cb(null, 'uploads/')
+    },
+    filename : function(req,file,cb)
+    {
+        cb(null, file.originalname)
+    }
+})
+
+var upload = multer({storage : storage, limits: {fileSize: 5 * 1024*1024}})
+
+router.post('/image', upload.single('file'), (req,res)=>{
+
+    
+    res.send('users/' + req.file.filename);
+    console.log(req.file);
+})
 
 router.get('/board/:cur', (req,res) =>{
 
@@ -76,6 +99,45 @@ if (curPage < 0) {
     })
     
     })
+})
+
+router.get('/insert', function(req,res)
+{
+    res.render('insert.html');
+})
+
+router.post('/insert', function(req,res)
+{
+    var body = req.body;
+    console.log(req.body);
+    db.query('insert into board(u_id, title, content) value (?,?,?)', [req.session.user.id,body.subject, body.content], function()
+    {
+        
+        res.redirect('/board/1');
+    })
+})
+
+router.get('/bdetail/:id', function(req, res)
+{
+    
+        db.query('select * from board where idx = ?', [req.params.id], function(error, result)
+        {
+            
+                    res.render('bdetail.html', {data : result });
+            })
+
+})
+
+router.get('/bdelete/:id', function(req, res)
+{
+    
+        db.query('delete from board where idx = ?', [req.params.id], function(error, result)
+        {
+            
+                    
+                    res.redirect('/board/1')
+            })
+
 })
 
 module.exports = router;
