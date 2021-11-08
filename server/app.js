@@ -4,6 +4,7 @@ var ejs = require('ejs');
 var session = require('express-session'); //session module;
 var MysqlStore = require('express-mysql-session')(session);
 const db = require('./db');
+
 const iosoc = require('express-socket.io-session');
 
 var server = require('http').createServer(app);
@@ -30,9 +31,12 @@ app.use(login);
 app.use(board);
 app.use(detail);
 app.use('/static', express.static(__dirname + '/public'))
+app.use('/users', express.static('uploads'));
 app.use(chat);
+
 app.use(iosoc(session, {autoSave : true}));
 // app.use(chatio);
+
 
 app.set('view engine', 'ejs');
 app.set('views', './views');

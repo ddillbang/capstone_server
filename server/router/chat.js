@@ -30,12 +30,13 @@ io.use(iosoc(session({
 
 io.on('connection', (socket) => {   //연결이 들어오면 실행되는 이벤트
     //socket.emit으로 현재 연결한 상대에게 신호를 보낼 수 있다.
-    socket.emit('usercount', io.engine.clientsCount);
+    // socket.emit('usercount', io.engine.clientsCount);
     console.log(socket.handshake.session.user.id); //testcode
 
     socket.on('join', function(){
         socket.join(socket.handshake.session.user.id);
         
+        //
         // db.query('select c_content from chat where c_to = ?', [socket.handshake.session.user.id],
         // function (error, result){
         //     if(error){

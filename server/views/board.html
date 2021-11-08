@@ -37,13 +37,13 @@
 <%= item.u_id %>
 </td>
 <td>
-<a href='/detail/<%= item.id %>'><%= item.title %></a>
+<a href='/bdetail/<%= item.idx %>'><%= item.title %></a>
 </td>
 <td>
-<a href="/delete/<%= item.id %>">삭제</a>
+<a href="/bdelete/<%= item.idx %>">삭제</a>
 </td>
 <td>
-<a href="/edit/<%= item.id %>">수정</a>
+<a href="/bedit/<%= item.idx %>">수정</a>
 </td>
 </tr>
 <% })%>
