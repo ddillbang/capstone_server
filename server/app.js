@@ -4,9 +4,11 @@ var ejs = require('ejs');
 var session = require('express-session'); //session module;
 var MysqlStore = require('express-mysql-session')(session);
 const db = require('./db');
+const iosoc = require('express-socket.io-session');
 const bodyPaser= require('body-parser');
 
 var server = require('http').createServer(app);
+global.server = server;
 
 
 const home = require('./router/home.js'); 
@@ -14,8 +16,7 @@ const search = require('./router/search.js');
 const login = require('./router/login.js'); 
 const board = require('./router/board.js'); 
 const detail = require('./router/detail.js'); 
-const chat = require('./router/chat.js');
-const chatio = require('./router/chatio.js')(server);
+const chat = require('./router/chat.js').router
 
 app.use(session({
     secret: '1234@', //it can be same as cookie setting
@@ -32,7 +33,7 @@ app.use(detail);
 app.use('/static', express.static(__dirname + '/public'))
 app.use('/users', express.static('uploads'));
 app.use(chat);
-
+app.use(iosoc(session, {autoSave : true}));
 app.use(bodyPaser.urlencoded({limit: '5mb', extended: false, parameterLimit: 10000}));
 
 
