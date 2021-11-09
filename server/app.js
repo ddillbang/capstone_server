@@ -6,7 +6,6 @@ var MysqlStore = require('express-mysql-session')(session);
 const db = require('./db');
 
 const iosoc = require('express-socket.io-session');
-const bodyPaser= require('body-parser');
 
 var server = require('http').createServer(app);
 global.server = server;
@@ -38,7 +37,6 @@ app.use('/users', express.static('uploads'));
 app.use(chat);
 
 app.use(iosoc(session, {autoSave : true}));
-app.use(bodyPaser.urlencoded({limit: '5mb', extended: false, parameterLimit: 10000}));
 
 
 
