@@ -12,9 +12,6 @@ var server = require('http').createServer(app);
 global.server = server;
 
 
-var server = require('http').createServer(app);
-global.server = server;
-
 const home = require('./router/home.js'); 
 const search = require('./router/search.js'); 
 const login = require('./router/login.js'); 
