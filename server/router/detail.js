@@ -74,12 +74,16 @@ router.get('/detail', (req,res) =>{
                 console.log(array);
                 
 
-                const $ = cheerio.load(iconv.decode(body2, 'EUC-KR'));
+            const $ = cheerio.load(iconv.decode(body2, 'EUC-KR'));
             const des = $('div.box_detail_content div.box_detail_article:first').text();
             const price = $('#container > div:nth-child(4) > form > div.box_detail_order > div.box_detail_price > ul > li:nth-child(1) > span.sell_price > strong').text();
             var bodyconvert = xmltojs.xml2json(body, {compact: true, spaces:4 });
-            let json = JSON.parse(bodyconvert)
+            let json = JSON.parse(bodyconvert);
+            
             let jsonp = json.rss.channel.item
+            let author = jsonp.author._text;
+            let originprice = jsonp.price._text;
+            
             try{
                 title = jsonp.title._text
             }
@@ -101,6 +105,7 @@ router.get('/detail', (req,res) =>{
             const dis2 = $2('a');
             ulList = [];
             ulList2 = [];
+            ulList3 = {};
             var k = 0;
             dis.each(function(i, elem)
             {
@@ -122,6 +127,16 @@ router.get('/detail', (req,res) =>{
                 }
 
             })
+
+            for(k in ulList)
+            {
+                if(ulList2[k] != '0')
+                {
+                    ulList3[ulList[k].title] = ulList2[k].cnt 
+                }
+            }
+
+            console.log(ulList3);
             
             
             //const dis = $2('th').text();
@@ -129,7 +144,7 @@ router.get('/detail', (req,res) =>{
             //console.log(dis.split(" "));
             //console.log(dis.replace(/(\s*)/g, ""), dis2.replace(/(\s*)/g, ""));
             
-            res.render('detail.html', {data : {title, img},  des : des, price : price, offline : {ulList, ulList2}, bookstore : bookstore})
+            res.render('detail2.html', {data : {title, img, author, originprice},  des : des, price : price, offline : {ulList, ulList2}, bookstore : bookstore})
 
 
             })
