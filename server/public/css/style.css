@@ -79,8 +79,8 @@
     border: 3px solid gray;
     margin-left: 5%;
 }
-.content1{
-    height: 1fr;
+.content{
+    /*height: 1fr;*/
     line-height: 90px;
     background-color: #26c6da;
 }
@@ -98,14 +98,14 @@
     display: none;
 } 
 .showstep1{
-    max-height: 300px;
+    /*max-height: 300px;*/
     overflow: hidden;
 }
 .showstep2{
     max-height: 600px;
     overflow: hidden;
 }
-.content{
+.content1{
     height: 1fr;
     background-color: gray;
 }

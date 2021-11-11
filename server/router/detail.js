@@ -66,29 +66,31 @@ router.get('/detail', (req,res) =>{
             qs: {barcode : req.query.isbn, ejkgb : 'KOR'}
         }, function(err4, res4, body3)
         {
-
             request.get({
-                uri : 'https://www.aladin.co.kr/search/wsearchresult.aspx',
-                //encoding: null,
-                headers: {Connection : 'Keep-Alive', 'User-Agent':'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36'
-                
-                },
-                qs: {SearchTarget : 'UsedStore', SearchWord : req.query.isbn}
+            uri : 'https://book.naver.com/search/search.naver',
+            encoding: null,
+            qs: {query : req.query.isbn}
 
-            }, function(err5, res5, body4)
+            }, function(err5,res5, body4)
             {
 
-                console.log(bookstore);
-                const $3 = cheerio.load(body4);
-                const tte = $3('.usedshop_off_text2_box').text();
+            const $3 = cheerio.load(iconv.decode(body4, 'EUC-KR'));
+            const link = $3('#searchBiblioList > li > dl > dt > a');
+            
+            request.get({
+                uri : link.attr('href'),
+                encoding: null
 
-                var array = tte.split(',');
-                console.log(array);
-                
+            }, function(err6, res6, body5)
+            {
 
+            const $4 = cheerio.load(body5);
             const $ = cheerio.load(iconv.decode(body2, 'EUC-KR'));
             const des = $('div.box_detail_content div.box_detail_article:first').text();
             const price = $('#container > div:nth-child(4) > form > div.box_detail_order > div.box_detail_price > ul > li:nth-child(1) > span.sell_price > strong').text();
+            const fullcontent = $('#container > div:nth-child(7) > div.content_left > div:nth-child(5)');
+
+            const cost_info = $4('#productListLayer');
             var bodyconvert = xmltojs.xml2json(body, {compact: true, spaces:4 });
             let json = JSON.parse(bodyconvert);
             
@@ -140,23 +142,25 @@ router.get('/detail', (req,res) =>{
 
             })
 
-            for(k in ulList)
+            for(var k = 0; k < ulList.length; ++k)
             {
-                if(ulList2[k] != '0')
+                if(ulList2[k].cnt != '0')
                 {
                     ulList3[ulList[k].title] = ulList2[k].cnt 
                 }
             }
 
-            console.log(ulList3);
             
+            res.render('detail2.html', {data : {title, img, author, originprice}, fulldes : fullcontent ,des : des, costinfo : cost_info,price : price, offline : {ulList, ulList2}, bookstore : bookstore})
+            })
+
             
-            //const dis = $2('th').text();
-            //const dis2 = $2('a').text();
-            //console.log(dis.split(" "));
-            //console.log(dis.replace(/(\s*)/g, ""), dis2.replace(/(\s*)/g, ""));
+
             
-            res.render('detail2.html', {data : {title, img, author, originprice},  des : des, price : price, offline : {ulList, ulList2}, bookstore : bookstore})
+
+            })
+
+            
 
 
             })
@@ -171,6 +175,6 @@ router.get('/detail', (req,res) =>{
     })
 
     
-})
+
 
 module.exports = router;
