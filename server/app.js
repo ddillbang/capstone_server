@@ -32,11 +32,13 @@ app.use(search);
 app.use(login);
 app.use(board);
 app.use(detail);
+app.use('/favicon.ico', express.static('public/favicon.ico'));
 app.use('/static', express.static(__dirname + '/public'))
 app.use('/users', express.static('uploads'));
 app.use(chat);
 
 app.use(iosoc(session, {autoSave : true}));
+
 
 
 

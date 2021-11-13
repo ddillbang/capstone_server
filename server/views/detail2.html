@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>책검색후 사이트</title>
+
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+    <div class="header">
+        <h1><a href="/">OWNBOOK</a></h1>
+        <ul class="menu">
+            <li><a href="#">HOME</a></li>
+            <li><a href="">CHEAT</a></li>
+            <li><a href="/signin">LOGIN</a></li>            
+            <!-- <li><a href=""></a>메뉴4</li>                        -->
+        </ul>
+    </div>
+    <script>
+        function trade(){
+
+        }
+        function searchData(){
+            var textbox = document.getElementById("searchtext");
+
+            if(textbox != null){
+                alert(textbox.value + "를 검색하셨습니다.");
+            }
+        }
+            document.addEventListener('DOMContentLoaded', function(){ //DOM 생성 후 이벤트 리스너 등록
+            //더보기 버튼 이벤트 리스너
+                document.querySelector('.btn_open').addEventListener('click', function(e){
+                    
+                    let classList = document.querySelector('.detailinfo').classList; // 더보기 프레임의 클래스 정보 얻기
+                    let contentHeight = document.querySelector('.detailinfo > .content').offsetHeight; //컨텐츠 높이 얻기
+
+                    // 2단계이면 전체보기로
+                    if(classList.contains('showstep2')){
+                        classList.remove('showstep2');
+                    }
+                    // 1단계이면 2단계로
+                    if(classList.contains('showstep1')){
+                        classList.remove('showstep1');
+                        if(contentHeight > 600){
+                            classList.add('showstep2');
+                        }else{
+                            document.querySelector('.btn_open').classList.add('hide');
+                        }
+                    }
+                    //전체보기시 더보기 버튼 감추기 & 감추기 버튼 표시
+                    if(!classList.contains('showstep1') && !classList.contains('showstep2')){
+                        e.target.classList.add('hide');
+                        document.querySelector('.btn_close').classList.remove('hide');
+                        
+                    }
+                    
+                });
+            });
+            document.querySelector('.btn_close').addEventListener('click', function(e){
+                e.target.classList.add('hide');
+                document.querySelector('.btn_open').classList.remove('hide'); // 더보기 버튼 감춤
+                document.querySelector('.detailinfo').classList.add('showstep1'); // 초기 감춤 상태로 복귀
+            });
+            window.addEventListener('load', function(){
+                let contentHeight = document.querySelector('.detailinfo > .content').offsetHeight; //컨텐츠 높이 얻기
+                if(contentHeight <= 300){
+                    document.querySelector('.detailinfo').classList.remove('showstep1'); // 초기값보다 작으면 전체 컨텐츠 표시
+                    document.querySelector('.btn_open').classList.add('hide'); // 버튼 감춤
+                }
+            });
+    </script>
+    <div class = "search">
+        <div class = "searchin">
+            [ 검색 ]
+            <input type="text" id = "searchtext" placeholder = "검색어 입력" onkeypress="if( event.keyCode == 13 ){searchData();}" > <!-- onchange = "alert('Hi')"-->
+            <input type="image" src = "검색버튼.png" width="30" height="30" onclick="searchData()">
+            <!-- <button type="button" onclick="say()" id="scbutton" >검색</button> -->
+            <!-- document.querySelector('body').style.backgroundColor='black'; -->
+            <!-- document.querySelector('body').style.color='white';-->
+        </div>
+    </div>
+
+    <div class="container">
+
+        <div class = "book_information">
+            <img src =<%= (data.img) %> alt ="준비중" width = 190px; height = 240px;>
+            <div id = "info">
+                <h3><%= data.title %></h3>
+                <p>
+                    <%= data.author %>
+                     <br><br><br>
+                     가격 : <%= data.originprice %> 원
+                </p>
+            </div>
+            <div class = "used">
+                이 책을 중고로 올린사람!
+                <br><br>
+                OOO : 10000원
+                <button type="button" onclick = "location.href = 'ex02.html'">대화</button>
+                <br>
+                OOO : 14000원
+                <button type="button" onclick = "location.href = 'ex02.html'">대화</button>
+
+                <%- costinfo %>
+            </div>
+            <div class = "map_">
+            </div>
+        </div>
+
+        <br>
+        [이 책을 사거나 검색했던 사람들이 추천하는 책]
+        <div class="content1">
+            <div class = "recommand">
+                <input type="image" src = "예시1.jpg" width="200px" height="270px" onclick="location.href = 'ex02.html'">
+                <input type="image" src = "예시2.jpg" width="200px" height="270px" onclick="location.href = 'ex02.html'">
+                <input type="image" src = "예시3.jpg" width="200px" height="270px" onclick="location.href = 'ex02.html'">
+            </div>
+        </div>
+        <div class="content2">
+            <div id="map" style="width:1fr;height:350px;"></div>
+                <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0806124c4b7baa046d9763c7760ba413"></script>
+                <script>
+                    var container = document.getElementById('map');
+                    var options = {
+                        center: new kakao.maps.LatLng(37.450701, 127.570667),
+                        level: 3
+                    };
+
+                    var map = new kakao.maps.Map(container, options);
+                    // HTML5의 geolocation으로 사용할 수 있는지 확인합니다 
+                    if (navigator.geolocation) {
+
+                        // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+                        navigator.geolocation.getCurrentPosition(function(position) {
+
+                            var lat = position.coords.latitude, // 위도
+                                lon = position.coords.longitude; // 경도
+
+                            var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+                                message = '<div style="padding:5px;">여기에 계신가요?!</div>'; // 인포윈도우에 표시될 내용입니다
+
+                            // 마커와 인포윈도우를 표시합니다
+                            displayMarker(locPosition, message);
+
+                          });
+
+                    } else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
+
+                        var locPosition = new kakao.maps.LatLng(33.450701, 126.570667),    
+                            message = 'geolocation을 사용할수 없어요..'
+
+                        displayMarker(locPosition, message);
+                    }
+
+                    // 지도에 마커와 인포윈도우를 표시하는 함수입니다
+                    function displayMarker(locPosition, message) {
+
+                        // 마커를 생성합니다
+                        var marker = new kakao.maps.Marker({  
+                            map: map, 
+                            position: locPosition
+                        }); 
+
+                        var iwContent = message, // 인포윈도우에 표시할 내용
+                            iwRemoveable = true;
+
+                        // 인포윈도우를 생성합니다
+                        var infowindow = new kakao.maps.InfoWindow({
+                            content : iwContent,
+                            removable : iwRemoveable
+                        });
+
+                        // 인포윈도우를 마커위에 표시합니다 
+                        infowindow.open(map, marker);
+
+                        // 지도 중심좌표를 접속위치로 변경합니다
+                        map.setCenter(locPosition);      
+                    }    
+
+                </script>
+            
+            
+            
+            
+            <div>
+                <br>
+                
+                
+                <br>
+                <table> 
+                  <tr>
+                    <td>ISBN</td>
+                    <td>---</td>
+                    <td>9788970509716(8970509712)</td>
+                  </tr>
+                  <tr>
+                    <td>쪽수</td>
+                    <td>---</td>
+                    <td>574쪽</td>
+                  </tr>
+                  <tr>
+                    <td>크기</td>
+                    <td>---</td>
+                    <td>216 * 274 * 28 mm / 1417g</td>
+                  </tr>
+                </table>
+                <div class="detailinfo showstep1">
+                    <div class="content"><!-- "실제 컨텐츠 표시 영역" -->
+                        <p> <%- fulldes %> </p>
+                    </div>
+                </div>
+
+                <a>책정보</a>
+                <a href="#" class="btn_open">더보기</a>
+                <a href="#" class="btn_close hide">감추기</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        
+    </div>
+</body>
+</html>
