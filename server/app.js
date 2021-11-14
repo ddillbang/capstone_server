@@ -27,6 +27,9 @@ app.use(session({
     store: new MysqlStore(db.d)
 }));
 
+app.use(express.json());
+app.use(express.urlencoded({extended : false}));
+
 app.use(home);
 app.use(search);
 app.use(login);

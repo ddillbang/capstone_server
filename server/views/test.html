@@ -1,0 +1,41 @@
+<p id = "id">hwa3060</p>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+$("#id").click(function(){
+    sendID();
+})
+
+function sendID(){
+    let id = $("#id")[0].innerText;
+    $.ajax({
+        type: "POST",
+        url : "/chattest",
+        data : {tosend : id},
+        success : function(data)
+        {
+            redirecting(data);
+        }
+    })
+}
+
+function redirecting(data)
+{
+    var form = document.createElement('form'); // 폼객체 생성
+    var objs;
+    objs = document.createElement('input'); // 값이 들어있는 녀석의 형식
+    objs.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
+    objs.setAttribute('name', 'uId'); // 객체이름
+    objs.setAttribute('value', data); //객체값
+    form.setAttribute('style', 'display:none');
+    form.appendChild(objs);
+    form.setAttribute('method', 'POST'); //get,post 가능
+    form.setAttribute('action', "/chat"); //보내는 url
+    document.body.appendChild(form);
+    form.submit();
+
+
+}
+
+</script>

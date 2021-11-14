@@ -44,9 +44,10 @@
             var msginput = document.getElementById('msginput');
             // socket.emit으로 서버에 신호를 전달
             var form = {
-                receiver : receiver.value,
+                receiver : "<%= id%>",
                 msg : msginput.value
             };
+            console.log(form.receiver, form.msg);
             socket.emit('message', form);
 
             msginput.value = "";

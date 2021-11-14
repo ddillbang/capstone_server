@@ -8,10 +8,11 @@ const db = require('../db');
 
 var user;
 //testcode
+
 router.get('/chat', function (req, res){
     if(req.session.user != undefined){ //if sign in successfuelly
         user = req.session.user;
-        res.render('chat3.html');
+        res.render('chat3.html', {id : req.body.uId});
     }
     else {
         res.redirect('/signin');
@@ -19,6 +20,17 @@ router.get('/chat', function (req, res){
     
 })
 
+
+router.post('/chat', function (req, res){
+    if(req.session.user != undefined){ //if sign in successfuelly
+        user = req.session.user;
+        res.render('chat3.html', {id : req.body.uId});
+    }
+    else {
+        res.redirect('/signin');
+    }
+    
+})
 
 var io = require('socket.io')(global.server);
 io.use(iosoc(session({
