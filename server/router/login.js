@@ -35,7 +35,7 @@ router.get('/signin', function(req, res){
 router.post('/signin', function(req, res){
     console.log(req.body); //test code
     let uid = req.body.user_ID;
-    let pw = req.body.user_PW1;
+    let pw = req.body.user_PW;
 
     db.query('select u_id, u_passwd from USERS where u_id = ? AND u_passwd = ?', [uid, pw], //check db
     function(error, result){
