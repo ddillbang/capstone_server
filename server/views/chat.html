@@ -1,54 +1,56 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Socket.io Test</title>
-
-  <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    #chatContent {
-      border: 1px solid #000;
-      width: 100%;
-      height: 200px;
-      margin-bottom: 10px;
-      overflow-y: auto;
-    }
-
-    #myChat {
-      width: 100%;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>Socket.IO 예제</title>
 </head>
-
 <body>
-  <div id="chatContent">
+    <ul id="messages" type="none">
+        <li id="usercount"></li>
+    </ul>
 
-  </div>
-  <input id="myChat" type="text">
+    <form id="msgform">
+        <input id="receiver" autocomplete="off" type="text">
+        <input id="msginput" autocomplete="off" type="text">
+        <button type="submit">전송</button>
+    </form>
 
-  <script>
-    var socket = io();
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+        var msgform = document.getElementById('msgform');
 
-    socket.on('msg', function (data) {
-      $("#chatContent").append(`${data}<br>`);
-    });
+        socket.emit('join', function() {
+            
+        });
 
-    $("#myChat").on("keyup", function () {
-      if (window.event.keyCode == 13) {
-        $("#chatContent").append(`Client : "${$(this).val()}" 보냅니다.<br>`);
-        socket.emit('msg', $(this).val());
-        $(this).val("");
-      }
-    });
-  </script>
+        // socket.on 함수로 서버에서 전달하는 신호를 수신
+        socket.on('usercount', (count) => {
+            var userCounter = document.getElementById('usercount');
+            userCounter.innerText = "현재 " + count + "명이 서버에 접속해있습니다.";
+        });
+
+        // 메시지 수신시 HTML에 메시지 내용 작성
+        socket.on('message', (msg) => {
+            var messageList = document.getElementById('messages');
+            var messageTag = document.createElement("li");
+            messageTag.innerText = msg;
+            messageList.appendChild(messageTag);
+        });
+
+        msgform.onsubmit = (e) => {
+            e.preventDefault();
+            var receiver = document.getElementById('receiver');
+            var msginput = document.getElementById('msginput');
+            // socket.emit으로 서버에 신호를 전달
+            var form = {
+                receiver : receiver.value,
+                msg : msginput.value
+            };
+            socket.emit('message', form);
+
+            msginput.value = "";
+        };
+    </script>
 </body>
-
 </html>

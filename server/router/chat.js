@@ -11,7 +11,7 @@ var user;
 router.get('/chat', function (req, res){
     if(req.session.user != undefined){ //if sign in successfuelly
         user = req.session.user;
-        res.render('chat3.html');
+        res.render('chat.html');
     }
     else {
         res.redirect('/signin');
@@ -29,25 +29,21 @@ io.use(iosoc(session({
 })));
 
 io.on('connection', (socket) => {   //연결이 들어오면 실행되는 이벤트
-    //socket.emit으로 현재 연결한 상대에게 신호를 보낼 수 있다.
-    // socket.emit('usercount', io.engine.clientsCount);
-    console.log(socket.handshake.session.user.id); //testcode
+    // console.log(socket.handshake.session.user.id); //testcode
 
     socket.on('join', function(){
         socket.join(socket.handshake.session.user.id);
         
-        //
-        // db.query('select c_content from chat where c_to = ?', [socket.handshake.session.user.id],
-        // function (error, result){
-        //     if(error){
-        //         console.log(error);
-        //     }
-        //     else if(result[0] == undefined) return;
-        //     for(contents in result){
-        //         console.log(contents);
-        //         io.to(socket.handshake.session.user.id).emit('message', contents);
-        //     }
-        // });
+        db.query('select c_from, c_content from chat where c_to = ?', [socket.handshake.session.user.id],
+        function (error, result){
+            if(error){
+                console.log(error);
+            }
+            else if(result[0] == undefined) return;
+            for(var contents in result){
+                io.to(socket.handshake.session.user.id).emit('message', result[contents].c_from + ' : ' + result[contents].c_content);
+            }
+        });
     })
 
     
