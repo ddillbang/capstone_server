@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>책검색후 사이트</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+    <div class="header">
+        <h1><a href="index.html">OWNBOOK</a></h1>
+        <ul class="menu">
+            <li><a href="#"></a>HOME</li>
+            <li><a href=""></a>CHEAT</li>
+            <li><a href="login.html"></a>LOGIN</li>            
+            <!-- <li><a href=""></a>메뉴4</li>                        -->
+        </ul>
+    </div>
+    <script type="text/javascript">
+        function trade(){
+ 
+        }
+        function searchData(){
+            var textbox = document.getElementById("searchtext");
+
+            if(textbox != null){
+                alert(textbox.value + "를 검색하셨습니다.");
+            }
+        }
+            /*document.addEventListener('DOMContentLoaded', function(){ //DOM 생성 후 이벤트 리스너 등록
+            //더보기 버튼 이벤트 리스너
+                document.querySelector('.btn_open').addEventListener('click', function(e){
+                    
+                    let classList = document.querySelector('.detailinfo').classList; // 더보기 프레임의 클래스 정보 얻기
+                    let contentHeight = document.querySelector('.detailinfo > .content').offsetHeight; //컨텐츠 높이 얻기
+                    // 2단계이면 전체보기로
+                    if(classList.contains('showstep2')){
+                        classList.remove('showstep2');
+                    }
+                    // 1단계이면 2단계로
+                    if(classList.contains('showstep1')){
+                        classList.remove('showstep1');
+                        if(contentHeight > 600){
+                            classList.add('showstep2');
+                        }else{
+                            document.querySelector('.btn_open').classList.add('hide');
+                        }
+                    }
+                    //전체보기시 더보기 버튼 감추기 & 감추기 버튼 표시
+                    if(!classList.contains('showstep1') && !classList.contains('showstep2')){
+                        e.target.classList.add('hide');
+                        document.querySelector('.btn_close').classList.remove('hide');
+                        
+                    }
+                    
+                });
+            });
+            document.querySelector('.btn_close').addEventListener('click', function(e){
+                e.target.classList.add('hide');
+                document.querySelector('.btn_open').classList.remove('hide'); // 더보기 버튼 감춤
+                document.querySelector('.detailinfo').classList.add('showstep1'); // 초기 감춤 상태로 복귀
+            });
+            window.addEventListener('load', function(){
+                let contentHeight = document.querySelector('.detailinfo > .content').offsetHeight; //컨텐츠 높이 얻기
+                if(contentHeight <= 300){
+                    document.querySelector('.detailinfo').classList.remove('showstep1'); // 초기값보다 작으면 전체 컨텐츠 표시
+                    document.querySelector('.btn_open').classList.add('hide'); // 버튼 감춤
+                }
+            });*/
+         function chat_hide(){
+                
+                if(document.getElementById("ex").style.display == 'none'){
+                    document.getElementById("ex").style.display = 'block';
+                }
+                else{
+                    document.getElementById("ex").style.display = 'none';
+                }
+                var currentPosition = parseInt($("#ex.used_chat").css("top")); 
+                $(window).scroll(function() { 
+                    var position = $(window).scrollTop();
+                    $("#ex.used_chat").stop().animate({"top":-100 + position+currentPosition+"px"},1000); 
+                });
+        
+                
+         }
+         var chat_logtop = 5;
+         var chat_logid = 0;
+         var m = 0;
+         function chatting_send(){
+            const element = document.getElementById("chat_log01");
+                    element.innerHTML += '<div' + 'id = "chatlog' + chat_logid +'" style="position: absolute; right: 5px; top:'+ chat_logtop +'px; border: 2px solid black; width: max-content; float: right; padding:5px; border-radius: 50px;">'+
+                    document.getElementById("chat_textbox").value +'</div>';
+                
+                chat_logtop += 50;
+                chat_logid++;
+                document.getElementById("chat_textbox").value = '';
+         }
+         function chatting_receive(){
+            const element = document.getElementById("chat_log01");
+            element.innerHTML += '<div style="position: absolute; left: 5px; top:'+ chat_logtop +'px; border: 2px solid black; width: max-content; float: right; padding:5px; border-radius: 50px;">'+
+                document.getElementById("chat_textbox01").value +'</div>'
+                chat_logtop += 50;
+                document.getElementById("chat_textbox01").value = '';
+         }
+ 
+
+    </script>
+    <div class = "search">
+        <div class = "searchin">
+            [ 검색 ]
+            <input type="text" id = "searchtext" placeholder = "검색어 입력" onkeypress="if( event.keyCode == 13 ){searchData();}" > <!-- onchange = "alert('Hi')"-->
+            <input type="image" src = "검색버튼.png" width="30" height="30" onclick="searchData()">
+            <!-- <button type="button" onclick="say()" id="scbutton" >검색</button> -->
+            <!-- document.querySelector('body').style.backgroundColor='black'; -->
+            <!-- document.querySelector('body').style.color='white';-->
+        </div>
+    </div>
+
+    <div class="container">
+
+        <div class = "book_information">
+            <img src = "예시.jpg" width="200px">
+            <div id = "info">
+                <h3>C언어로 쉽게 풀어쓴 자료구조</h3>
+                <p>
+                    천인국 , 공용해 , 허상호 지음 | 생능출판 |<br>
+                    2019년 02월 22일 출간<br>
+                    (1쇄 2005년 07월 15일)<br>
+                     <br><br><br>
+                     가격 : OO,OOOwon
+                </p>
+            </div>
+            <div class = "used" style="position: relative; z-index: 1;">
+                이 책을 중고로 올린사람!
+                <br><br>
+                OOO : 10000원
+                <button type="button" onclick = "chat_hide()">대화</button>
+                <br>
+                OOO : 14000원
+                <button type="button" onclick = "" >대화</button>
+            </div>
+
+        </div>
+        
+        <div id="map" style="width:1fr;height:350px;"></div>
+        <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0806124c4b7baa046d9763c7760ba413"></script>
+        <script>
+            var container = document.getElementById('map');
+            var options = {
+                center: new kakao.maps.LatLng(37.450701, 127.570667),
+                level: 3
+            };
+
+            var map = new kakao.maps.Map(container, options);
+            // HTML5의 geolocation으로 사용할 수 있는지 확인합니다 
+            if (navigator.geolocation) {
+
+                // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+                navigator.geolocation.getCurrentPosition(function(position) {
+
+                    var lat = position.coords.latitude, // 위도
+                        lon = position.coords.longitude; // 경도
+
+                    var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+                        message = '<div style="padding:5px;">여기에 계신가요?!</div>'; // 인포윈도우에 표시될 내용입니다
+
+                    // 마커와 인포윈도우를 표시합니다
+                    displayMarker(locPosition, message);
+
+                  });
+
+            } else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
+
+                var locPosition = new kakao.maps.LatLng(33.450701, 126.570667),    
+                    message = 'geolocation을 사용할수 없어요..'
+
+                displayMarker(locPosition, message);
+            }
+
+            // 지도에 마커와 인포윈도우를 표시하는 함수입니다
+            function displayMarker(locPosition, message) {
+
+                // 마커를 생성합니다
+                var marker = new kakao.maps.Marker({  
+                    map: map, 
+                    position: locPosition
+                }); 
+
+                var iwContent = message, // 인포윈도우에 표시할 내용
+                    iwRemoveable = true;
+
+                // 인포윈도우를 생성합니다
+                var infowindow = new kakao.maps.InfoWindow({
+                    content : iwContent,
+                    removable : iwRemoveable
+                });
+
+                // 인포윈도우를 마커위에 표시합니다 
+                infowindow.open(map, marker);
+
+                // 지도 중심좌표를 접속위치로 변경합니다
+                map.setCenter(locPosition);      
+            }    
+
+        </script>
+        
+    <div>
+
+        <br>
+        [이 책을 사거나 검색했던 사람들이 추천하는 책]
+        <div class="content1">
+            <div class = "recommand">
+                <input type="image" src = "예시1.jpg" width="200px" height="270px" onclick="location.href = 'ex02.html'">
+                <input type="image" src = "예시2.jpg" width="200px" height="270px" onclick="location.href = 'ex02.html'">
+                <input type="image" src = "예시3.jpg" width="200px" height="270px" onclick="location.href = 'ex02.html'">
+            </div>
+        </div>
+        <!-- <div class="content2">
+             <div>
+                <br>
+                
+                
+                <br>
+                <table> 
+                  <tr>
+                    <td>ISBN</td>
+                    <td>---</td>
+                    <td>9788970509716(8970509712)</td>
+                  </tr>
+                  <tr>
+                    <td>쪽수</td>
+                    <td>---</td>
+                    <td>574쪽</td>
+                  </tr>
+                  <tr>
+                    <td>크기</td>
+                    <td>---</td>
+                    <td>216 * 274 * 28 mm / 1417g</td>
+                  </tr>
+                </table>
+                <div class="detailinfo showstep1">
+                    <div class="content"> <!-- "실제 컨텐츠 표시 영역" --
+                        <p>
+                            책이 속한 분야
+                            <br>
+                            컴퓨터/IT > 프로그래밍 언어 > C <br>
+                            컴퓨터/IT > 컴퓨터공학 > 자료구조/알고리즘 <br>
+                            컴퓨터/IT > 대학교재 <br>
+                            대학교재 > 컴퓨터 <br>
+                            </p>
+                            <p>
+                            목차
+                            <br>
+                            Chapter 01 자료구조와 알고리즘<br>
+                            1.1 자료구조와 알고리즘<br>
+                            1.2 추상 자료형<br>
+                            1.3 알고리즘의 성능 분석<br>
+                            ■연습문제<br>
+            
+                            Chapter 02 순환<br>
+                            2.1 순환의 소개<br>
+                            2.2 거듭제곱값 계산<br>
+                            2.3 피보나치 수열의 계산<br>
+                            2.4 하노이탑 문제<br>
+                            ■연습문제<br>
+            
+                            Chapter 03 배열, 구조체, 포인터<br>
+                            3.1 배열<br>
+                            3.2 구조체<br>
+                            3.3 배열의 응용: 다항식<br>
+                            3.4 배열의 응용: 희소행렬<br>
+                            3.5 포인터<br>
+                            3.6 동적 메모리 할당<br>
+                            ■연습문제<br>
+            
+                            Chapter 04 스택<br>
+                            4.1 스택이란?<br>
+                            4.2 스택의 구현<br>
+                            4.3 동적 배열 스택<br>
+                            4.4 스택의 응용: 괄호 검사 문제<br>
+                            4.5 스택의 응용: 후위 표기 수식의 계산<br>
+                            4.6 스택의 응용: 미로 문제<br>
+                            ■연습문제<br>
+            
+                            Chapter 05 큐<br>
+                            5.1 큐 추상 데이터 타입<br>
+                            5.2 선형큐<br>
+                            5.3 원형큐<br>
+                            5.4 큐의 응용: 버퍼<br>
+                            5.5 덱이란?<br>
+                            5.6 큐의 응용: 시뮬레이션<br>
+                            ■연습문제<br>
+            
+                            Chapter 06 연결 리스트 I<br>
+                            6.1 리스트 추상 데이터 타입<br>
+                            6.2 배열로 구현된 리스트<br>
+                            6.3 연결 리스트<br>
+                            6.4 단순 연결 리스트<br>
+                            6.5 단순 연결 리스트의 연산 구현<br>
+                            6.6 연결 리스트의 응용: 다항식<br>
+                            ■연습문제<br>
+            
+                            Chapter 07 연결 리스트 II<br>
+                            7.1 원형 연결 리스트<br>
+                            7.2 원형 연결 리스트는 어디에 사용될까?<br>
+                            7.3 이중 연결 리스트<br>
+                            7.4 예제: mp3 재생 프로그램 만들기<br>
+                            7.5 연결 리스트로 구현한 스택<br>
+                            7.5 연결 리스트로 구현한 큐<br>
+                            ■연습문제<br>
+            
+                            Chapter 08 트리<br>
+                            8.1 트리의 개념<br>
+                            8.2 이진 트리 소개<br>
+                            8.3 이진 트리의 표현<br>
+                            8.4 이진 트리의 순회<br>
+                            8.5 반복적 순회<br>
+                            8.6 레벨 순회<br>
+                            8.7 트리의 응용: 수식 트리 처리<br>
+                            8.8 트리의 응용: 디렉토리 용량 계산<br>
+                            8.9 이진 트리의 추가 연산<br>
+                            8.10 스레드 이진 트리<br>
+                            8.11 이진 탐색 트리<br>
+                            8.12 이진 탐색 트리의 응용: 영어 사전<br>
+                            ■연습문제<br>
+            
+                            Chapter 09 우선순위 큐<br>
+                            9.1 우선순위 큐 추상 데이터 타입<br>
+                            9.2 우선순위 큐의 구현 방법<br>
+                            9.3 히프<br>
+                            9.4 히프의 구현<br>
+                            9.5 히프 정렬<br>
+                            9.6 머쉰 스케줄링<br>
+                            9.7 허프만 코드<br>
+                            ■연습문제<br>
+            
+                            Chapter 10 그래프 I<br>
+                            10.1 그래프란?<br>
+                            10.2 그래프의 정의와 용어<br>
+                            10.3 그래프의 표현 방법<br>
+                            10.4 그래프의 탐색<br>
+                            10.5 깊이 우선 탐색<br>
+                            10.6 너비 우선 탐색<br>
+                            ■연습문제<br>
+            
+                            Chapter 11 그래프 II<br>
+                            11.1 최소 비용 신장 트리<br>
+                            11.2 Kruskal의 MST 알고리즘<br>
+                            11.3 Prim의 MST 알고리즘<br>
+                            11.4 최단 경로<br>
+                            11.5 Dijkstra의 최단 경로 알고리즘<br>
+                            11.6 Floyd의 최단 경로 알고리즘<br>
+                            11.7 위상 정렬<br>
+                            ■연습문제<br>
+            
+                            Chapter 12 정렬<br>
+                            12.1 정렬이란?<br>
+                            12.2 선택 정렬<br>
+                            12.3 삽입 정렬<br>
+                            12.4 버블 정렬<br>
+                            12.5 쉘 정렬<br>
+                            12.6 합병 정렬<br>
+                            12.7 퀵 정렬<br>
+                            12.8 히프 정렬<br>
+                            12.9 기 수정렬<br>
+                            12.10 정렬 알고리즘의 비교<br>
+                            12.11 정렬의 응용: 영어 사전을 위한 정렬<br>
+                            ■연습문제<br>
+            
+                            Chapter 13 탐색<br>
+                            13.1 탐색이란?<br>
+                            13.2 정렬되지 않은 배열에서의 탐색<br>
+                            13.3 정렬된 배열에서의 탐색<br>
+                            13.4 이진 탐색 트리<br>
+                            13.5 AVL트리<br>
+                            13.6 2-3 트리<br>
+                            13.7 2-3-4 트리<br>
+                            ■연습문제<br>
+            
+                            Chapter 14 해싱<br>
+                            14.1 해싱이란?<br>
+                            14.2 추상 자료형 사전<br>
+                            14.3 해싱의 구조<br>
+                            14.4 해시함수<br>
+                            14.5 개방 주소법<br>
+                            14.6 체이닝<br>
+                            14.7 해싱의 성능 분석<br>
+                            14.8 해싱의 응용 분야<br>
+                            ■연습문제<br>
+                            </p>
+                    </div>
+                </div>
+                <a>책정보</a>
+                <a href="#" class="btn_open">더보기</a>
+                <a href="#" class="btn_close hide">감추기</a>
+            </div>
+        
+        </div> -->
+        
+    </div>
+    <div class = "used_chat" id = "ex" style="display: none; position: relative; bottom: 600px; right: -350px; width: 500px; height: 500px; float: right; z-index: 2; margin-right: 10%">
+        <div id = "chat_log01" style="overflow: auto; position: relative; top: 10px; left: 10px; width: 475px; height: 430px; border: 2px solid black; border-radius: 10px; text-align: right; z-index: 2; ">
+                    
+        </div>
+        <div style="position: relative; bottom: 424px; left: 10px; width: 475px; height: 430px; border: 2px solid black; border-radius: 10px; z-index: 1;">
+
+        </div>
+        <div>
+            <input type="text" id = "chat_textbox" onkeypress="if( event.keyCode == 13 ){chatting_send();}" style = "position: relative; bottom: 415px; left: 10px; width: 400px; height: 30px; border-radius: 10px; border: 2px solid gray">
+            <input type="button" value="전송" style = "position: relative; bottom: 415px; left: 5px; width: 60px; height: 36px;
+                background-color: lightblue; border: 2px solid gray; border-radius: 10px; color: white; font-size: 15px;">
+        </div>
+    </div>
+        <script>
+            
+        </script>
+    <div class="footer">
+        <input type="text" id = "chat_textbox01" onkeypress="if( event.keyCode == 13 ){chatting_receive();}" style = "width: 400px; height: 30px; border-radius: 10px; border: 2px solid gray">
+    </div>
+</body>
+</html>
