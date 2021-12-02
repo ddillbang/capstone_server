@@ -12,7 +12,7 @@ var user;
 router.get('/chat', function (req, res){
     if(req.session.user != undefined){ //if sign in successfuelly
         user = req.session.user;
-        res.render('chat3.html', {id : req.body.uId});
+        res.render('chat.html', {id : req.body.uId});
     }
     else {
         res.redirect('/signin');
@@ -24,7 +24,7 @@ router.get('/chat', function (req, res){
 router.post('/chat', function (req, res){
     if(req.session.user != undefined){ //if sign in successfuelly
         user = req.session.user;
-        res.render('chat3.html', {id : req.body.uId});
+        res.render('chat.html', {id : req.body.uId});
     }
     else {
         res.redirect('/signin');

@@ -84,6 +84,8 @@ router.get('/detail', (req,res) =>{
             }, function(err6, res6, body5)
             {
 
+              
+
             const $4 = cheerio.load(body5);
             const $ = cheerio.load(iconv.decode(body2, 'EUC-KR'));
             const des = $('div.box_detail_content div.box_detail_article:first').text();
@@ -150,8 +152,19 @@ router.get('/detail', (req,res) =>{
                 }
             }
 
+            request.get({
+                uri : 'http://210.113.232.104:8000/plus',
+                encoding: null,
+                qs: {isbn : req.query.isbn, content : des}
+
+            }, function(err7, res7, body7)
+            {
+                console.log(JSON.parse(body7));
+                res.render('detail2.html', {data : {title, img, author, originprice}, fulldes : fullcontent ,des : des, costinfo : cost_info,price : price, offline : {ulList, ulList2}, bookstore : bookstore})
+            })
+
             
-            res.render('detail2.html', {data : {title, img, author, originprice}, fulldes : fullcontent ,des : des, costinfo : cost_info,price : price, offline : {ulList, ulList2}, bookstore : bookstore})
+            
             })
 
             

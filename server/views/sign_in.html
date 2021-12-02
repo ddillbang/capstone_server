@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>obeta</title>
 
-    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="static/css/signin_style.css">
 </head>
 <body>
     <div class="header">
@@ -12,7 +12,7 @@
         <ul class="menu">
             <li><a href="#">HOME</a></li>
             <li><a href="">CHEAT</a></li>
-            <li><a href="sign_in.html">LOGIN</a></li>            
+            <li><a href="login.html">LOGIN</a></li>            
             <!-- <li><a href=""></a>메뉴4</li>                        -->
         </ul>
     </div>
@@ -26,17 +26,25 @@
             }
         }
 
-
     </script>
     <section>
-        <form name = "signin" action = "/signin" method="post">
-            ID : <input type="text" name = "user_ID">
-            PASSWORD : <input type = "password" name = "user_PW">
-            <input type="submit" name="" value="로그인">
-            <input type="button" value="아이디 찾기">
-            <input type="button" value="패스워드 찾기">
+        <form name = "signin", action = "/signin" method="post">
+            <input type="text" id = "user_ID" placeholder = "아이디를 입력해주세요." style = "width: 450px; height: 40px; margin-top: 10px;margin-bottom: 5px; border-radius: 7px;">
+            <input type="password" id = "user_PW" placeholder = "비밀번호를 입력해주세요." style = "width: 450px; height: 40px; margin-bottom: 15px; border-radius: 7px;">
+            <input type="submit" value="로그인" style = "width: 450px; height: 40px; border-radius: 7px;">
         </form>
     </section>
+    <div class = "login">
+            <h1 style="margin-left: 20px;">로그인</h1>
+            <div class = login_a style="text-align: center; height: 200px;">
+                
+            </div>
+            <div class = login_b style="text-align: center">
+                <a href="#">아이디 찾기</a> / 
+                <a href="#">비밀번호 찾기</a> / 
+                <a href="#">회원가입</a>
+            </div>
+        </div>
 
     <div class="container">
         
