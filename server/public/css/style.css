@@ -115,3 +115,10 @@
     background-color: lightblue;
 }
 
+.used_chat{
+    display: block;
+    border: 10px solid gray;
+    background-color: white;
+    margin-left: 5%;
+    border-radius: 10px;
+}

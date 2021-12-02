@@ -27,17 +27,15 @@
         }
 
     </script>
-    <section>
-        <form name = "signin", action = "/signin" method="post">
-            <input type="text" id = "user_ID" placeholder = "아이디를 입력해주세요." style = "width: 450px; height: 40px; margin-top: 10px;margin-bottom: 5px; border-radius: 7px;">
-            <input type="password" id = "user_PW" placeholder = "비밀번호를 입력해주세요." style = "width: 450px; height: 40px; margin-bottom: 15px; border-radius: 7px;">
-            <input type="submit" value="로그인" style = "width: 450px; height: 40px; border-radius: 7px;">
-        </form>
-    </section>
     <div class = "login">
             <h1 style="margin-left: 20px;">로그인</h1>
             <div class = login_a style="text-align: center; height: 200px;">
-                
+                <form name = "signin", action = "/signin" method="post">
+                    <input type="text" name = "user_ID" placeholder = "아이디를 입력해주세요." style = "width: 450px; height: 40px; margin-bottom: 15px; border-radius: 7px;"> 
+                    <input type="password" name = "user_PW" placeholder = "비밀번호를 입력해주세요." style = "width: 450px; height: 40px; margin-bottom: 15px; border-radius: 7px;">
+                    <input type="submit" value="로그인" name="" style = "width: 450px; height: 40px; border-radius: 7px;">
+                </form>
+
             </div>
             <div class = login_b style="text-align: center">
                 <a href="#">아이디 찾기</a> / 

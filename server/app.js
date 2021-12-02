@@ -16,6 +16,7 @@ const search = require('./router/search.js');
 const login = require('./router/login.js'); 
 const board = require('./router/board.js'); 
 const detail = require('./router/detail.js'); 
+const testdetail = require('./router/detail3.js');
 
 const chat = require('./router/chat.js').router
 
@@ -39,6 +40,7 @@ app.use('/favicon.ico', express.static('public/favicon.ico'));
 app.use('/static', express.static(__dirname + '/public'))
 app.use('/users', express.static('uploads'));
 app.use(chat);
+app.use(testdetail);
 
 app.use(iosoc(session, {autoSave : true}));
 
