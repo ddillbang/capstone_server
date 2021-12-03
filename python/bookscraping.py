@@ -47,4 +47,4 @@ colList = ['name', 'isbn', 'content']
 
 df = pd.DataFrame(np.array(book_list), columns=colList)
 
-df.to_csv("저장경로", index=False, encoding='CP949')
+df.to_csv("저장경로/파일명.csv", index=False, encoding='CP949')
