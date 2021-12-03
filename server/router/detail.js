@@ -152,16 +152,16 @@ router.get('/detail', (req,res) =>{
                 }
             }
 
-            request.get({
+            /*request.get({
                 uri : 'http://210.113.232.104:8000/plus',
                 encoding: null,
                 qs: {isbn : req.query.isbn, content : des}
 
             }, function(err7, res7, body7)
             {
-                console.log(JSON.parse(body7));
+                console.log(JSON.parse(body7));*/
                 res.render('detail2.html', {data : {title, img, author, originprice}, fulldes : fullcontent ,des : des, costinfo : cost_info,price : price, offline : {ulList, ulList2}, bookstore : bookstore})
-            })
+            /*})*/
 
             
             
