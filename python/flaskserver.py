@@ -13,6 +13,7 @@ from gensim.models import KeyedVectors
 import sys
 from konlpy.tag import Kkma
 import csv
+import numpy as np
 
 class Plus(Resource):
     def get(self):
@@ -26,11 +27,11 @@ class Plus(Resource):
 
             doc = ok(args['content'])
             w2 = w2v(doc)
+            print(type(w2))
 
             new_model = KeyedVectors.load_word2vec_format('book_model_f.bin', binary=True)
             new_model[args['isbn']] = w2;
             result = new_model.most_similar(args['isbn'])
-            print(result)
             
             f = open('user_md_f.csv','r')
             rdr = csv.reader(f)
@@ -77,6 +78,41 @@ class Plus(Resource):
             return {'result': result}
         except Exception as e:
             return {'error': str(e)}
+        
+
+class User(Resource):
+    def get(self):
+        try:
+            parser = reqparse.RequestParser()
+            parser.add_argument('userid', type=str)
+            args = parser.parse_args()
+
+            new_model = KeyedVectors.load_word2vec_format('book_model_f.bin', binary=True)
+            f = open('user_md_f.csv','r')
+            rdr = csv.reader(f)
+
+            for line in rdr:
+                if line[0] == args["userid"]:
+                    user_v = line[1]
+
+            f.close()
+            
+            new_list=[]
+            user_v = str(user_v)[1:-1]
+
+            for vector in user_v.split():
+                new_list.append(float(vector))
+                
+            new_list = np.array(new_list)
+            
+            new_model[args['userid']] = new_list;
+            result = new_model.most_similar(args['userid'])
+            print(result)
+            
+            
+            return {'result': result}
+        except Exception as e:
+            return {'error': str(e)}
 
 from flask import Flask
 from flask_restful import Api
@@ -84,6 +120,7 @@ from flask_restful import Api
 app = Flask('My First App')
 api = Api(app)
 api.add_resource(Plus, '/plus')
+api.add_resource(User, '/user')
 
 def init():
     global k,model
