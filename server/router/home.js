@@ -37,6 +37,8 @@ router.get('/', (req,res) =>{
 
             })
         })
+    }else{
+        res.render('home2.html', {recom : undefined} );
     }
     
 })

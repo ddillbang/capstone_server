@@ -178,10 +178,17 @@ router.get('/detail', (req,res) =>{
                     ulList3[ulList[k].title] = ulList2[k].cnt 
                 }
             }
+
+            if(req.session.user != undefined)
+            {
+                qstoflask = {isbn : req.query.isbn, content : des, userid : req.session.user.id}
+            }else{
+                qstoflask = {isbn : req.query.isbn, content : des}
+            }
             request.get({
                 uri : 'http://220.94.2.145:8000/plus',
                 encoding: null,
-                qs: {isbn : req.query.isbn, content : des, userid : req.session.user.id}
+                qs: qstoflask
 
             }, function(err7, res7, body7)
             {
