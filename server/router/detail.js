@@ -243,7 +243,7 @@ router.get('/detail', (req,res) =>{
                 qstoflask = {isbn : req.query.isbn, content : des}
             }
             request.get({
-                uri : 'http://220.94.2.145:8000/plus',
+                uri : 'http://127.0.0.1:5000/plus',
                 encoding: null,
                 qs: qstoflask
 
