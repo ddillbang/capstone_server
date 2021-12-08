@@ -149,12 +149,12 @@
                 displayMarker(locPosition, message);
             }
 
-              for(index in <%= offline.ulList %>){ 
-                if(<%=offline.ulList2[index].cnt %> != '0'){ 
-                     if(<%=bookstore[offline.ulList[index].title]%> != undefined){
+              <% for(var index in offline.ulList){ %>
+               <% if(offline.ulList2[index].cnt  != '0'){ %>
+                    <% if(bookstore[offline.ulList[index].title] != undefined){%>
                         var locb = new kakao.maps.LatLng(<%= bookstore[offline.ulList[index].title]['위도']%> ,<%= bookstore[offline.ulList[index].title]['경도'] %> )
                         disMark(locb,<%= offline.ulList[index].title%> + "재고 : " + <%= offline.ulList2[index].cnt%>  )
-                    }}}
+                    <%}}}%>
 
             // 지도에 마커와 인포윈도우를 표시하는 함수입니다
             function displayMarker(locPosition, message) {
