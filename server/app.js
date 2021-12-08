@@ -3,11 +3,20 @@ var app = express();
 var ejs = require('ejs');
 var session = require('express-session'); //session module;
 var MysqlStore = require('express-mysql-session')(session);
+const fs = require('fs');
 const db = require('./db');
 
 const iosoc = require('express-socket.io-session');
 
-var server = require('http').createServer(app);
+const https_options = {
+	key: fs.readFileSync("/etc/letsencrypt/live/kmuob.duckdns.org/privkey.pem"),
+	cert: fs.readFileSync("/etc/letsencrypt/live/kmuob.duckdns.org/cert.pem"),
+	ca: fs.readFileSync("/etc/letsencrypt/live/kmuob.duckdns.org/chain.pem")
+};
+
+
+var http_server = require('http').createServer(app);
+var server = require('https').createServer(https_options,app);
 global.server = server;
 
 
@@ -39,22 +48,3 @@ app.use(detail);
 app.use('/favicon.ico', express.static('public/favicon.ico'));
 app.use('/static', express.static(__dirname + '/public'))
 app.use('/users', express.static('uploads'));
-app.use(chat);
-app.use(testdetail);
-
-app.use(iosoc(session, {autoSave : true}));
-
-
-
-
-
-app.set('view engine', 'ejs');
-app.set('views', './views');
-app.engine('html', ejs.renderFile);
-
-
-server.listen(3000, function()
-{
-    console.log("서버가동");
-})
-

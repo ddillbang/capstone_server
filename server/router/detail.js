@@ -35,7 +35,56 @@ var bookstore = {
     동대문 : {
         경도 : '37.56874659862493', 
         위도 : '127.00765306804509'
+    },
+    디큐브 : {
+        경도 : '37.50912998204819', 
+        위도 : '126.88881903068152'
+    },
+    목동 : {
+        경도 : '37.52840215038431', 
+        위도 : '126.87499172680128'
+    },
+    서울대 : {
+        경도 : '37.46005134064367', 
+        위도 : '126.95047276860745'
+    },
+    수유 : {
+        경도 : '37.63837791525465', 
+        위도 : '127.02648372680358'
+    },
+    영등포 : {
+        경도 : '37.517143136786025', 
+        위도 : '126.90412044029556'
+    },
+    은평 : {
+        경도 : '37.63717092135103', 
+        위도 : '126.9182189096165'
+    },
+    이화여대 : {
+        경도 : '37.56154056048309', 
+        위도 : '126.94676756913152'
+    },
+    천호 : {
+        경도 : '37.54064261531199', 
+        위도 : '127.12499298447183'
+    },
+    청량리 : {
+        경도 : '37.58077800270892', 
+        위도 : '127.047525151945'
+    },
+    합정 : {
+        경도 : '37.55020095513928', 
+        위도 : '126.91207888262572'
+    },
+    대구 : {
+        경도 : '35.870661258651815',
+        위도 : '128.59486043428907'
+    },
+    반월당 : {
+        경도 : '35.866535628531466',
+        위도 : '128.59078029621543'
     }
+
 }
 
 
@@ -119,7 +168,15 @@ router.get('/detail', (req,res) =>{
             const price = $('#container > div:nth-child(4) > form > div.box_detail_order > div.box_detail_price > ul > li:nth-child(1) > span.sell_price > strong').text();
             const fullcontent = $('#container > div:nth-child(7) > div.content_left > div:nth-child(5)');
 
-            const cost_info = $4('#productListLayer');
+            var cost_info = []
+            for(var i = 1; i <11; ++i)
+            {
+                var cost1= $4('#productListLayer > ul > li > .npay_wrap > a').eq(2*i - 2);
+                var cost_info2 = $4('#productListLayer > ul > li > span').eq(i);
+                cost_info.push("<div>" + cost1 + "<br>" +cost_info2 + "</div>")
+            }
+
+            
             var bodyconvert = xmltojs.xml2json(body, {compact: true, spaces:4 });
             let json = JSON.parse(bodyconvert);
             
@@ -208,7 +265,7 @@ router.get('/detail', (req,res) =>{
                         var bodyconvert2 = xmltojs.xml2json(body9, {compact: true, spaces:4 });
                         let json2 = JSON.parse(bodyconvert2);
                         let jsonp2 = json2.rss.channel.item
-                        var recomb2 = jsonp2.image._text
+                        var recomb2 = [jsonp2.image._text, bd7["result"][0][0]]
 
                         request.get({
                             uri:'https://openapi.naver.com/v1/search/book_adv.xml',
@@ -223,7 +280,7 @@ router.get('/detail', (req,res) =>{
                             var bodyconvert3 = xmltojs.xml2json(body10, {compact: true, spaces:4 });
                             let json3 = JSON.parse(bodyconvert3);
                             let jsonp3 = json3.rss.channel.item
-                            var recomb3 = jsonp3.image._text
+                            var recomb3 = [jsonp3.image._text, bd7["result"][1][0]]
 
                             request.get({
                                 uri:'https://openapi.naver.com/v1/search/book_adv.xml',
@@ -237,9 +294,9 @@ router.get('/detail', (req,res) =>{
                                 var bodyconvert4 = xmltojs.xml2json(body11, {compact: true, spaces:4 });
                                 let json4 = JSON.parse(bodyconvert4);
                                 let jsonp4 = json4.rss.channel.item
-                                var recomb4 = jsonp4.image._text
+                                var recomb4 = [jsonp4.image._text, bd7["result"][2][0]]
 
-                                res.render('detail2.html', {data : {title, img, author, originprice}, fulldes : fullcontent ,des : des, costinfo : cost_info,price : price, offline : {ulList, ulList2}, bookstore : bookstore, recomb : {recomb2,recomb3, recomb4}})
+                                res.render('detail4.html', {data : {title, img, author, originprice}, fulldes : fullcontent ,des : des, costinfo : {cost_info,cost_info2},price : price, offline : {ulList, ulList2}, bookstore : bookstore, recomb : {recomb2,recomb3, recomb4}})
 
                             })
                         })

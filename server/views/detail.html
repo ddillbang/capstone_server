@@ -2,7 +2,13 @@
 <img src =<%= (data.img) %> alt ="준비중">
 <p> <%= des %></p>
 <p><%= price %></p>
-<p><%= offline.ulList[0].title %></p>
-<p><%= offline.ulList2[0].cnt %></p>
-<p><%= bookstore[offline.ulList[0].title]['위도'] %></p>
+<% for(index in offline.ulList) {%>
+    <% if(offline.ulList2[index].cnt != '0') {%>
+        <% if(bookstore[offline.ulList[index].title] != undefined) {%>
+        <p><%= offline.ulList[index].title %></p>
+        <p><%= offline.ulList2[index].cnt %></p>
+        <p><%= bookstore[offline.ulList[index].title]['위도'] %></p>
+        <p><%= bookstore[offline.ulList[index].title]['경도'] %></p>
+        <%}}}%>
+
 
