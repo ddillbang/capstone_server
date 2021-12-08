@@ -48,3 +48,29 @@ app.use(detail);
 app.use('/favicon.ico', express.static('public/favicon.ico'));
 app.use('/static', express.static(__dirname + '/public'))
 app.use('/users', express.static('uploads'));
+app.use(chat);
+app.use(testdetail);
+
+app.use(iosoc(session, {autoSave : true}));
+
+app.set('view engine', 'ejs');
+app.set('views', './views');
+app.engine('html', ejs.renderFile);
+/*
+http_server.listen(3000, function(req, res, next){//http server for redirecting to https
+});
+
+app.get('/', function(req, res, next){//redirect if request on http
+	if(req.secure){
+		next();
+	}
+	else{
+		res.redirect("https://kmuob.duckdns.org:3001" + req.url);
+	}
+});
+*/
+server.listen(3000, function()
+{
+    console.log("서버가동");
+})
+
