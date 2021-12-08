@@ -11,7 +11,7 @@ router.get('/', (req,res) =>{
     if(req.session.user != undefined)
     {
         request.get({
-            uri : 'http://220.94.2.145:8000/user',
+            uri : 'http://127.0.0.1:5000/user',
             encoding: null,
             qs: {userid : req.session.user.id}
         }, function(err1,res1,body1)
