@@ -4,6 +4,7 @@ var ejs = require('ejs');
 var session = require('express-session'); //session module;
 var MysqlStore = require('express-mysql-session')(session);
 const db = require('./db');
+var fs = require('fs');
 
 const iosoc = require('express-socket.io-session');
 
@@ -45,16 +46,11 @@ app.use(testdetail);
 app.use(iosoc(session, {autoSave : true}));
 
 
-
-
-
 app.set('view engine', 'ejs');
 app.set('views', './views');
 app.engine('html', ejs.renderFile);
-
 
 server.listen(3000, function()
 {
     console.log("서버가동");
 })
-

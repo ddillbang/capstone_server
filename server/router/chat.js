@@ -71,10 +71,12 @@ io.on('connection', (socket) => {   //연결이 들어오면 실행되는 이벤
         });
         //msg에는 클라이언트에서 전송한 매개변수가 들어온다. 이러한 매개변수의 수에는 제한이 없다.
         console.log('Message received: ' + socket.handshake.session.user.id + ' : ' + form.msg);
-        
+        console.log(form.receiver);
         // io.emit으로 연결된 모든 소켓들에 신호를 보낼 수 있다.
         io.to(socket.handshake.session.user.id).emit('message', socket.handshake.session.user.id + ' : ' + form.msg);
+        //if(form.receiver != null){
         io.to(form.receiver).emit('message', socket.handshake.session.user.id + ' : ' + form.msg);
+        //}
     });
 });
 
