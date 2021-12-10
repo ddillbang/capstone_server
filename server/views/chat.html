@@ -15,9 +15,11 @@
         <button type="submit">전송</button>
     </form>
 
-    <script src="/socket.io/socket.io.js"></script>
+    <!--script src="/socket.io/socket.io.js"></script-->
+    <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
     <script>
-        var socket = io();
+        //var socket = io();
+        var socket = io('https://kmuob.duckdns.org:3000');
         var msgform = document.getElementById('msgform');
 
         socket.emit('join', function() {
