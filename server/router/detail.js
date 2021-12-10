@@ -6,6 +6,7 @@ const cheerio = require('cheerio');
 const iconv = require('iconv-lite');
 const axios = require('axios');
 const { query } = require('express');
+const db = require('../db');
 
 const CLIENT_ID = 'W12PsIX84oIcyfufTCCG';
 const CLIENT_SECRET = 'jO2h2HTVCh';
@@ -88,29 +89,6 @@ var bookstore = {
 }
 
 
-function getImage(isbn){
-    return axios.get("https://openapi.naver.com/v1/search/book_adv.xml",{
-        params: {
-            d_isbn : isbn
-        },
-        headers : {
-            'X-Naver-Client-Id' : CLIENT_ID,
-            'X-Naver-Client-Secret' : CLIENT_SECRET
-        }
-    })
-}
-
-function getImage2(isbn){
-    return request.get({
-        uri:'https://openapi.naver.com/v1/search/book_adv.xml',
-        qs:isbn,
-        headers : {
-            'X-Naver-Client-Id' : CLIENT_ID,
-            'X-Naver-Client-Secret' : CLIENT_SECRET
-        }
-    })
-}
-
 router.get('/detail', (req,res) =>{
 
     const option = {
@@ -166,7 +144,7 @@ router.get('/detail', (req,res) =>{
             const $ = cheerio.load(iconv.decode(body2, 'EUC-KR'));
             const des = $('div.box_detail_content div.box_detail_article:first').text();
             const price = $('#container > div:nth-child(4) > form > div.box_detail_order > div.box_detail_price > ul > li:nth-child(1) > span.sell_price > strong').text();
-            const fullcontent = $('#container > div:nth-child(7) > div.content_left > div:nth-child(5)');
+            //const fullcontent = $('#container > div:nth-child(7) > div.content_left > div:nth-child(5)');
 
             var cost_info = []
             for(var i = 1; i <11; ++i)
@@ -181,9 +159,20 @@ router.get('/detail', (req,res) =>{
             let json = JSON.parse(bodyconvert);
             
             let jsonp = json.rss.channel.item
-            let author = jsonp.author._text;
-            let originprice = jsonp.price._text;
-            
+            try{
+                 author = jsonp.author._text;
+            }
+            catch(exception)
+            {
+                author =''
+            }
+            try{
+                originprice = jsonp.price._text;
+           }
+           catch(exception)
+           {
+               originprice =''
+           }
             try{
                 title = jsonp.title._text
             }
@@ -296,7 +285,32 @@ router.get('/detail', (req,res) =>{
                                 let jsonp4 = json4.rss.channel.item
                                 var recomb4 = [jsonp4.image._text, bd7["result"][2][0]]
 
-                                res.render('detail4.html', {data : {title, img, author, originprice}, fulldes : fullcontent ,des : des, costinfo : {cost_info,cost_info2},price : price, offline : {ulList, ulList2}, bookstore : bookstore, recomb : {recomb2,recomb3, recomb4}})
+                                db.query('select * from board WHERE isbn = ?',[req.query.isbn],
+                                
+                                    function(err, result)
+                                    {
+                                        if(err){
+                                            console.log(error);
+                                        }else{
+                                        if(!result[0])
+                                        {
+                                            dbre = undefined
+                                        }
+                                        else{
+                                            dbre = result
+                                        }
+                                        }
+
+                                        var usession = {};
+                                    if(req.session.user)
+                                    {
+                                        usession = req.session
+                                    }
+                                        res.render('detail4.html', {dbdata : {dbre},data : {title, img, author, originprice} ,des : des, costinfo : {cost_info,cost_info2},price : price, offline : {ulList, ulList2}, bookstore : bookstore, recomb : {recomb2,recomb3, recomb4}, usession : usession})
+                                    }
+                                )
+
+                                
 
                             })
                         })

@@ -56,7 +56,7 @@ router.post('/signin', function(req, res){
             }
             // console.log(req.session); // testcode
             req.session.save(function(){
-                res.redirect('/login');
+                res.redirect('/');
             })
         }
     });

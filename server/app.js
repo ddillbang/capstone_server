@@ -15,7 +15,7 @@ const https_options = {
 };
 
 
-var http_server = require('http').createServer(app);
+// var server = require('http').createServer(app);
 var server = require('https').createServer(https_options,app);
 global.server = server;
 
@@ -73,4 +73,3 @@ server.listen(3000, function()
 {
     console.log("서버가동");
 })
-

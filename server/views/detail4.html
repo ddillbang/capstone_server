@@ -10,9 +10,13 @@
     <div class="header">
         <h1><a href="/">OWNBOOK</a></h1>
         <ul class="menu">
-            <li><a href="/"></a>HOME</li>
-            <li><a href=""></a>CHAT</li>
-            <li><a href="/signin"></a>LOGIN</li>            
+            <a href="/"><li>HOME</li></a>
+            <a href="/chat"><li>CHAT</li></a>
+            <% if(usession.user){%>
+                <a href="/logout"><li>LOGOUT</li></a>
+                    <% } else{%>
+            <li><a href="/signin">LOGIN</a></li>
+            <% }%>          
             <!-- <li><a href=""></a>메뉴4</li>                        -->
         </ul>
     </div>
@@ -21,26 +25,25 @@
  
         }
         function searchData(){
-            var textbox = document.getElementById("searchtext");
-
-            if(textbox != null){
-                alert(textbox.value + "를 검색하셨습니다.");
-            }
+            location.href = "/search?query=" + $("#searchtext").val()
         }
-         function chat_hide(){
-                
-                if(document.getElementById("ex").style.display == 'none'){
-                    document.getElementById("ex").style.display = '';
-                }
-                else{
-                    document.getElementById("ex").style.display = 'none';
-                }
-               
-                 var currentPosition = parseInt($("#ex.used_chat").css("top"));
-                 $(window).scroll(function() { 
-                 var position = $(window).scrollTop();
-                 $("#ex.used_chat").stop().animate({"top":-400 + position+currentPosition+"px"},1000); 
-                 });  
+        
+         function chat_hide(clicked_id){
+                console.log(clicked_id)
+            if(document.getElementById("ex").style.display == 'none'){
+                document.getElementById("ex").style.display = '';
+                $("#chat_textbox").addClass(clicked_id);
+            }
+            else{
+                document.getElementById("ex").style.display = 'none';
+                $("#chat_textbox").removeClass(clicked_id);
+            }
+           
+             var currentPosition = parseInt($("#ex.used_chat").css("top"));
+             $(window).scroll(function() { 
+             var position = $(window).scrollTop();
+             $("#ex.used_chat").stop().animate({"top":-400 + position+currentPosition+"px"},1000); 
+             }); 
                 
          }
         
@@ -52,6 +55,14 @@
                     element.innerHTML += '<div' + 'id = "chatlog' + chat_logid +'" style="position: absolute; right: 5px; top:'+ chat_logtop +'px; border: 2px solid black; width: max-content; float: right; padding:5px; border-radius: 50px;">'+
                     document.getElementById("chat_textbox").value +'</div>';
                 
+                var message = document.getElementById('chat_textbox');
+                var form = {
+                    receiver : $("#chat_textbox").attr('class'),
+                    msg : message.value
+                };
+                console.log(form)
+                socket.emit('message', form);
+
                 chat_logtop += 50;
                 chat_logid++;
                 document.getElementById("chat_textbox").value = '';
@@ -86,29 +97,19 @@
             </div>
                <div class = "used" id = "used_" style="position: relative; z-index: 1; display: block; padding: 7px;">
                 [중고 물품 판매자]
+                <% if (dbdata.dbre == undefined){ %>
+                    <div>판매자가 없습니다</div>
+                <%}%>
+                    
+                <% for(index in dbdata.dbre){ %>
+                    
                 <div style="border: solid 1px green; border-radius: 20px; display: grid; grid-template-columns: 70px 100px 70px; width: 240px; padding: 5px;">
-                    <div>OOO</div>
-                    <div>10000원</div>
-                    <button type="button" style="width: 50px;" onclick = "chat_hide()">대화</button>
+                    <div><%= dbdata.dbre[index]['u_id'] %></div>
+                    <div><%= dbdata.dbre[index]['price'] %>원</div>
+                    <button type="button" id ="<%= dbdata.dbre[index]['u_id'] %>"style="width: 50px;" onclick = "chat_hide(this.id)">대화</button>
                 </div>
                 <br>
-                <div style="border: solid 1px green; border-radius: 20px; display: grid; grid-template-columns: 70px 100px 70px; width: 240px; padding: 5px;">
-                    <div>OOO</div>
-                    <div>14000원</div>
-                    <button type="button" style="width: 50px;" onclick = "chat_hide()">대화</button>
-                </div>
-                <br>
-                <div style="border: solid 1px green; border-radius: 20px; display: grid; grid-template-columns: 70px 100px 70px; width: 240px; padding: 5px;">
-                    <div>OOO</div>
-                    <div>13500원</div>
-                    <button type="button" style="width: 50px;" onclick = "chat_hide()">대화</button>
-                </div>
-                <br>
-                <div style="border: solid 1px green; border-radius: 20px; display: grid; grid-template-columns: 70px 100px 70px; width: 240px; padding: 5px;">
-                    <div>OOO</div>
-                    <div>13700원</div>
-                    <button type="button" style="width: 50px;" onclick = "chat_hide()">대화</button>
-                </div>
+                <% } %>
               
             </div>
 
@@ -238,9 +239,19 @@
                 background-color: lightblue; border: 2px solid gray; border-radius: 10px; color: white; font-size: 15px;">
         </div>
     </div>
-        <script>
-            
-        </script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+        var msgform = document.getElementById('msgform');
+        socket.emit('join', function(){
+
+        });
+
+        msgform.onsubmit = function (e){
+            e.preventDefault();
+            // chatting_send();
+        }
+    </script>
     <!--<div class="footer">
         <input type="text" id = "chat_textbox01" onkeypress="if( event.keyCode == 13 ){chatting_receive();}" style = "width: 400px; height: 30px; border-radius: 10px; border: 2px solid gray">
     </div>-->

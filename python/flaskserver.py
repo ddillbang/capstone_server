@@ -14,6 +14,28 @@ import sys
 from konlpy.tag import Kkma
 import csv
 import numpy as np
+import requests
+from bs4 import BeautifulSoup as bs
+import random
+
+header = {
+'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.71 Safari/537.36',
+'Referer': 'https://sso.kmu.ac.kr/kmusso/ext/ctl/login_form.do?Return_Url=https://ctl.kmu.ac.kr/index.jsp',
+'Connection': 'keep-alive'
+}
+
+header2 = {
+'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.71 Safari/537.36',
+'Referer': 'https://ctl.kmu.ac.kr/Study.do?cmd=viewStudyMyClassroom',
+'Connection': 'keep-alive'
+}
+
+header3 = {
+'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.71 Safari/537.36',
+'Connection': 'keep-alive'
+}
+
+
 
 class Plus(Resource):
     def get(self):
@@ -97,28 +119,77 @@ class User(Resource):
             f = open('user_md_f.csv','r')
             rdr = csv.reader(f)
 
+            flag = 0
             for line in rdr:
                 if line[0] == args["userid"]:
+                    flag = 1
                     user_v = line[1]
 
             f.close()
             
-            new_list=[]
-            user_v = str(user_v)[1:-1]
+            if(flag == 1):
+                new_list=[]
+                new_result = []
+                user_v = str(user_v)[1:-1]
 
-            for vector in user_v.split():
-                new_list.append(float(vector))
+                for vector in user_v.split():
+                    new_list.append(float(vector))
+                    
+                new_list = np.array(new_list)
                 
-            new_list = np.array(new_list)
+                new_model[args['userid']] = new_list;
+                result = new_model.most_similar(args['userid'])
+                for i in range(5):
+                    new_result.append(result[i][0])
+                print(new_result)
+            else:
+                print("ehla")
+                random_book = random.sample(new_model.index_to_key,5)
+                new_result = random_book
             
-            new_model[args['userid']] = new_list;
-            result = new_model.most_similar(args['userid'])
-            print(result)
             
-            
-            return {'result': result}
+            return {'result': new_result}
         except Exception as e:
             return {'error': str(e)}
+        
+class Ctl(Resource):
+    def get(self):
+        try:
+            parser = reqparse.RequestParser()
+            parser.add_argument('id', type=str)
+            parser.add_argument('pw', type=str)
+            args = parser.parse_args()
+            
+            Login_info = {
+                'Return_Url' : 'https://ctl.kmu.ac.kr/index.jsp',
+                'loginName' : args['id'],
+                'password' : args['pw']
+            }
+
+            with requests.Session() as s:
+                login_req = s.post('https://sso.kmu.ac.kr/kmusso/ext/ctl/login_process.do', data = Login_info, headers=header)
+                html = s.get('https://ctl.kmu.ac.kr/Main.do?cmd=moveMenu&mainDTO.parentMenuId=menu_00026&mainDTO.menuId=menu_00031', cookies=s.cookies, headers = header2)
+                soup = bs(html.text, 'html.parser')
+                title = soup.select('#listBox > table > tbody > tr > td > a')
+                title3 = soup.select('tbody > tr > td:nth-of-type(1)')
+                ctl_book = []
+                index = 0
+                for i in title:
+                    k = 'https://ctl.kmu.ac.kr/Course.do?cmd=viewCoursePlanChapterListNew&boardInfoDTO.boardInfoGubun=course_plan&courseDTO.courseId='+i['href'][26:-2]+'&mainDTO.parentMenuId=menu_00047&mainDTO.menuId=menu_00052'
+                    html2 = s.get(k,cookies=s.cookies, headers = header3)
+                    soup2 = bs(html2.text, 'html.parser')
+                    title2 = soup2.select('#listBox > .optionContent')
+                    data = {'name' : title3[index].text, 'book' : title2[3].text}
+                    ctl_book.append(data)
+                    index = index + 1
+            
+            print(ctl_book)
+            
+            
+            return {'result': ctl_book}
+        except Exception as e:
+            return {'error': str(e)}
+
 
 from flask import Flask
 from flask_restful import Api
@@ -127,6 +198,7 @@ app = Flask('My First App')
 api = Api(app)
 api.add_resource(Plus, '/plus')
 api.add_resource(User, '/user')
+api.add_resource(Ctl, '/ctl')
 
 def init():
     global k,model
@@ -163,4 +235,4 @@ def w2v(doc):
 
 if __name__ == '__main__':
         init()
-        app.run(host='0.0.0.0', port=8000, debug=True)
+        app.run()

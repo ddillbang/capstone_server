@@ -13,18 +13,18 @@
 <body>
 
 <div class="container">
-<h2>상품테이블</h2>
+<h2>중고거래 게시판</h2>
 
-<a href="/insert">추가하기</a>
+<a href="/insert">글쓰기</a>
 <br>
 <br>
-<p>상품테이블 목록입니다.</p>
+
 
 <table class="table table-striped">
 <thead>
 <tr>
 <th>아이디</th>
-<th>상품명</th>
+<th>제목</th>
 <th>수정</th>
 <th>삭제</th>
 </tr>
@@ -78,7 +78,7 @@ if(curSet > 1){
 %>
 
 <li value=(startPage -1) class="previous">
-<a href='/paging/<%= ( startPage - 1) %>'>이전페이지</a>
+<a href='/board/<%= ( startPage - 1) %>'>이전페이지</a>
 </li>
 
 <%
@@ -93,7 +93,7 @@ if(i > totalPage){break;}
 if(i == curPage){
 %>
 <li value=<%= i %> class='' >
-<a href='/paging/<%= i %>'>
+<a href='/board/<%= i %>'>
 <%= i %>
 </a>
 </li>
@@ -103,7 +103,7 @@ if(i == curPage){
 %>
 
 <li value=<%= i %> class='active' >
-<a href='/paging/<%= i %>'>
+<a href='/board/<%= i %>'>
 <%= i %>
 </a>
 </li>
@@ -121,7 +121,7 @@ if(i == curPage){
 if(curSet < totalSet){
 %>
 <li value=( endPage + 1) class="next">
-<a href='/paging/<%= ( endPage + 1) %>'>다음페이지</a>
+<a href='/board/<%= ( endPage + 1) %>'>다음페이지</a>
 </li>
 <%
 }

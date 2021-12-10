@@ -111,7 +111,7 @@ router.post('/insert', function(req,res)
 {
     var body = req.body;
     console.log(req.body);
-    db.query('insert into board(u_id, title, content) value (?,?,?)', [req.session.user.id,body.subject, body.content], function()
+    db.query('insert into board(u_id, title, content, isbn, price) value (?,?,?,?,?)', [req.session.user.id,body.subject, body.content, body.isbn, body.price], function()
     {
         
         res.redirect('/board/1');

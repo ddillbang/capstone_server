@@ -23,8 +23,13 @@ router.get('/search', (req,res) =>{
         }
     }, function(err, res2, body)
     {
+        var usession = {};
+        if(req.session.user)
+        {
+            usession = req.session
+        }
         let json = JSON.parse(body)
-        res.render('search.html', {data : json})
+        res.render('search2.html', {query : option.query, data : json, usession : usession})
     })
 
     
