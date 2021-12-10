@@ -1,0 +1,116 @@
+.header{
+    width: 1100px;
+    height: 60px;
+    background-color: lightblue;
+    margin:0 auto;
+
+}
+
+.header h1{
+    color: white;
+    float: left;
+    line-height: 16px;
+    text-decoration: none;
+}
+.header a{
+    text-decoration: none;
+    color: white;
+}
+
+.menu{
+    float: right;
+    width: 500px;
+    height: 50px;
+}
+
+.menu li{
+    float: left;
+    width: 25%;
+    list-style: none;
+    line-height: 28px;
+    color: white;
+}
+
+.menu a{
+   color:white; 
+   text-decoration: none;
+}
+
+.search{
+    width: 1100px;
+    height: inherit;
+    margin: 0 auto;
+    margin-top: 30px;
+}
+
+.searchin{
+    display: grid;
+    width: 650px;
+    margin: auto;
+    grid-template-columns: 60px 400px 50px;
+    height: 30px;
+}
+.login{
+    display: block;
+    width: 1100px;
+    height: inherit;
+    margin: 0 auto;
+    margin-top: 30px;
+}
+
+.container{
+    width: 1100px;
+    height: inherit;
+    margin: 0 auto;
+    margin-top: 30px;
+    background-color: lightblue;
+}
+.book_information{
+    display:grid;
+    grid-template-columns: 220px 350px 250px 250px;
+    margin-right: 50px;
+}
+.used{
+    display: block;
+    border: 3px solid gray;
+    margin-left: 5%;
+}
+.map{
+    border: 3px solid gray;
+    margin-left: 5%;
+}
+.content1{
+    height: 1fr;
+    line-height: 90px;
+    background-color: #26c6da;
+}
+.recommand{
+    display:grid;
+    grid-template-columns: 220px 220px 220px;
+    margin-top: 10px;
+    border: 3px solid gray;
+}
+.content2{
+    width: 1fr;
+    background-color: white;
+}
+.hide{
+    display: none;
+} 
+.showstep1{
+    max-height: 300px;
+    overflow: hidden;
+}
+.showstep2{
+    max-height: 600px;
+    overflow: hidden;
+}
+.content{
+    height: 1fr;
+    background-color: gray;
+}
+
+.footer{
+    height: 40px;
+    background-color: lightblue;
+}

@@ -23,7 +23,7 @@ router.get('/detail2', (req,res) =>{
     {
         let json = JSON.parse(body)
         console.log(json);
-        res.render('detail2.html', {data : json})
+        res.render('detail4.html', {data : json})
     })
 
     

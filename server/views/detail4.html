@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>책검색후 사이트</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+    <div class="header">
+        <h1><a href="/">OWNBOOK</a></h1>
+        <ul class="menu">
+            <li><a href="/"></a>HOME</li>
+            <li><a href=""></a>CHAT</li>
+            <li><a href="/signin"></a>LOGIN</li>            
+            <!-- <li><a href=""></a>메뉴4</li>                        -->
+        </ul>
+    </div>
+    <script type="text/javascript">
+        function trade(){
+ 
+        }
+        function searchData(){
+            var textbox = document.getElementById("searchtext");
+
+            if(textbox != null){
+                alert(textbox.value + "를 검색하셨습니다.");
+            }
+        }
+         function chat_hide(){
+                
+                if(document.getElementById("ex").style.display == 'none'){
+                    document.getElementById("ex").style.display = '';
+                }
+                else{
+                    document.getElementById("ex").style.display = 'none';
+                }
+               
+                 var currentPosition = parseInt($("#ex.used_chat").css("top"));
+                 $(window).scroll(function() { 
+                 var position = $(window).scrollTop();
+                 $("#ex.used_chat").stop().animate({"top":-400 + position+currentPosition+"px"},1000); 
+                 });  
+                
+         }
+        
+         var chat_logtop = 5;
+         var chat_logid = 0;
+         var m = 0;
+         function chatting_send(){
+            const element = document.getElementById("chat_log01");
+                    element.innerHTML += '<div' + 'id = "chatlog' + chat_logid +'" style="position: absolute; right: 5px; top:'+ chat_logtop +'px; border: 2px solid black; width: max-content; float: right; padding:5px; border-radius: 50px;">'+
+                    document.getElementById("chat_textbox").value +'</div>';
+                
+                var message = document.getElementById('chat_textbox');
+                var form = {
+                    receiver : null,
+                    msg : message.value
+                };
+                socket.emit('message', form);
+
+                chat_logtop += 50;
+                chat_logid++;
+                document.getElementById("chat_textbox").value = '';
+         }
+         function chatting_receive(){
+            const element = document.getElementById("chat_log01");
+            element.innerHTML += '<div style="position: absolute; left: 5px; top:'+ chat_logtop +'px; border: 2px solid black; width: max-content; float: right; padding:5px; border-radius: 50px;">'+
+                document.getElementById("chat_textbox01").value +'</div>'
+                chat_logtop += 50;
+                document.getElementById("chat_textbox01").value = '';
+         }
+
+    </script>
+    <div class = "search">
+        <div class = "searchin">
+            <input type="text" id = "searchtext" placeholder = "검색어 입력" style="width: 560px;height:40px;font-size:17px;float:left; border-radius:7px; border-color: skyblue; margin: auto" onkeypress="if( event.keyCode == 13 ){searchData();}" > 
+            <input type="image" src = "https://cdn.pixabay.com/photo/2013/07/12/14/48/search-148820__340.png" style="float:left; width:30px; height:30px; margin:auto;" onclick="searchData()">
+        </div>
+    </div>
+
+    <div class="container">
+
+        <div class = "book_information">
+            <img src =<%= (data.img) %> alt ="준비중" width = 190px; height = 240px;>
+            <div id = "info">
+                <h3><%= data.title %></h3>
+                <p>
+                    <%= data.author %>
+                     <br><br><br>
+                     가격 : <%= data.originprice %> 원
+                </p>
+            </div>
+               <div class = "used" id = "used_" style="position: relative; z-index: 1; display: block; padding: 7px;">
+                [중고 물품 판매자]
+                <div style="border: solid 1px green; border-radius: 20px; display: grid; grid-template-columns: 70px 100px 70px; width: 240px; padding: 5px;">
+                    <div>OOO</div>
+                    <div>10000원</div>
+                    <button type="button" style="width: 50px;" onclick = "chat_hide()">대화</button>
+                </div>
+                <br>
+                <div style="border: solid 1px green; border-radius: 20px; display: grid; grid-template-columns: 70px 100px 70px; width: 240px; padding: 5px;">
+                    <div>OOO</div>
+                    <div>14000원</div>
+                    <button type="button" style="width: 50px;" onclick = "chat_hide()">대화</button>
+                </div>
+                <br>
+                <div style="border: solid 1px green; border-radius: 20px; display: grid; grid-template-columns: 70px 100px 70px; width: 240px; padding: 5px;">
+                    <div>OOO</div>
+                    <div>13500원</div>
+                    <button type="button" style="width: 50px;" onclick = "chat_hide()">대화</button>
+                </div>
+                <br>
+                <div style="border: solid 1px green; border-radius: 20px; display: grid; grid-template-columns: 70px 100px 70px; width: 240px; padding: 5px;">
+                    <div>OOO</div>
+                    <div>13700원</div>
+                    <button type="button" style="width: 50px;" onclick = "chat_hide()">대화</button>
+                </div>
+              
+            </div>
+
+        </div>
+
+        <div id="map" style="width:1fr;height:350px;"></div>
+        <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0806124c4b7baa046d9763c7760ba413"></script>
+        <script>
+            var container = document.getElementById('map');
+            var options = {
+                center: new kakao.maps.LatLng(37.450701, 127.570667),
+                level: 3
+            };
+
+            var map = new kakao.maps.Map(container, options);
+            // HTML5의 geolocation으로 사용할 수 있는지 확인합니다 
+            if (navigator.geolocation) {
+
+                // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+                navigator.geolocation.getCurrentPosition(function(position) {
+
+                    var lat = position.coords.latitude, // 위도
+                        lon = position.coords.longitude; // 경도
+
+                    var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+                        message = '<div style="padding:5px;">여기에 계신가요?!</div>'; // 인포윈도우에 표시될 내용입니다
+
+                    // 마커와 인포윈도우를 표시합니다
+                    displayMarker(locPosition, message);
+
+                  });
+
+            } else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
+
+                var locPosition = new kakao.maps.LatLng(33.450701, 126.570667),    
+                    message = 'geolocation을 사용할수 없어요..'
+
+                displayMarker(locPosition, message);
+            }
+
+              <% for(var index in offline.ulList){ %>
+               <% if(offline.ulList2[index].cnt  != '0'){ %>
+                    <% if(bookstore[offline.ulList[index].title] != undefined){%>
+                        var locb = new kakao.maps.LatLng(<%= bookstore[offline.ulList[index].title]['위도']%> ,<%= bookstore[offline.ulList[index].title]['경도'] %> )
+                        disMark(locb,<%= offline.ulList[index].title%> + "재고 : " + <%= offline.ulList2[index].cnt%>  )
+                    <%}}}%>
+
+            // 지도에 마커와 인포윈도우를 표시하는 함수입니다
+            function displayMarker(locPosition, message) {
+
+                // 마커를 생성합니다
+                var marker = new kakao.maps.Marker({  
+                    map: map, 
+                    position: locPosition
+                }); 
+
+                var iwContent = message, // 인포윈도우에 표시할 내용
+                    iwRemoveable = true;
+
+                // 인포윈도우를 생성합니다
+                var infowindow = new kakao.maps.InfoWindow({
+                    content : iwContent,
+                    removable : iwRemoveable
+                });
+
+                // 인포윈도우를 마커위에 표시합니다 
+                infowindow.open(map, marker);
+
+                // 지도 중심좌표를 접속위치로 변경합니다
+                map.setCenter(locPosition);      
+            } 
+            
+            function disMark(locPosition, message)
+            {
+                var marker = new kakao.maps.Marker({  
+                    map: map, 
+                    position: locPosition
+                }); 
+
+                var iwContent = message, // 인포윈도우에 표시할 내용
+                    iwRemoveable = true;
+
+                // 인포윈도우를 생성합니다
+                var infowindow = new kakao.maps.InfoWindow({
+                    content : iwContent,
+                    removable : iwRemoveable
+                });
+
+                // 인포윈도우를 마커위에 표시합니다 
+                infowindow.open(map, marker);
+            }
+
+        </script>
+        <br>
+        <div id = "sitelink" style="border: solid 1px; display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;">
+            <% for(index in costinfo.cost_info){ %>
+             <%- costinfo.cost_info[index] %> 
+             <% }%>
+
+            
+            
+            <br><br><br><br>
+        </div>
+    <div>
+        <br>
+        [이 책을 사거나 검색했던 사람들이 추천하는 책]
+        <div class="content1">
+            <div class = "recommand">
+                <input type="image" src = <%= (recomb.recomb2[0]) %> width="200px" height="270px" onclick="location.href = '/detail?isbn=<%= recomb.recomb2[1]%>'">
+                <input type="image" src = <%= (recomb.recomb3[0]) %> width="200px" height="270px" onclick="location.href = '/detail?isbn=<%= recomb.recomb3[1]%>'">
+                <input type="image" src = <%= (recomb.recomb4[0]) %> width="200px" height="270px" onclick="location.href = '/detail?isbn=<%= recomb.recomb4[1]%>'">
+            </div>
+        </div>
+        
+        
+    </div>
+    <div class = "used_chat" id = "ex" style="display: none; position: relative; top: -900px; bottom: 600px; right: -350px; width: 500px; height: 500px; float: right; z-index: 2; margin-right: 10%";>
+        <div id = "chat_log01" style="overflow: auto; position: relative; top: 10px; left: 10px; width: 475px; height: 430px; border: 2px solid black; border-radius: 10px; text-align: right; z-index: 2; ">
+                    
+        </div>
+        <div style="position: relative; bottom: 424px; left: 10px; width: 475px; height: 430px; border: 2px solid black; border-radius: 10px; z-index: 1;">
+
+        </div>
+        <div>
+            <input type="text" id = "chat_textbox" onkeypress="if( event.keyCode == 13 ){chatting_send();}" style = "position: relative; bottom: 415px; left: 10px; width: 400px; height: 30px; border-radius: 10px; border: 2px solid gray">
+            <input type="submit" value="전송" style = "position: relative; bottom: 415px; left: 5px; width: 60px; height: 36px;
+                background-color: lightblue; border: 2px solid gray; border-radius: 10px; color: white; font-size: 15px;">
+        </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+        <script>
+            var socket = io();
+            var msgform = document.getElementById('msgform');
+            socket.emit('join', function(){
+
+            });
+
+            msgform.onsubmit = function (e){
+                e.preventDefault();
+                chatting_send();
+            }
+        </script>
+    <!--<div class="footer">
+        <input type="text" id = "chat_textbox01" onkeypress="if( event.keyCode == 13 ){chatting_receive();}" style = "width: 400px; height: 30px; border-radius: 10px; border: 2px solid gray">
+    </div>-->
+</body>
+</html>

@@ -88,14 +88,14 @@
          var chat_logid = 0;
          var m = 0;
          function chatting_send(){
-            preventDefault();
+
             const element = document.getElementById("chat_log01");
                     element.innerHTML += '<div' + 'id = "chatlog' + chat_logid +'" style="position: absolute; right: 5px; top:'+ chat_logtop +'px; border: 2px solid black; width: max-content; float: right; padding:5px; border-radius: 50px;">'+
                     document.getElementById("chat_textbox").value +'</div>';
 
                 var message = document.getElementById("chat_textbox");
                 var form = {
-                    receiver : null,
+                    receiver : 1,
                     msg : message.value
                 };
                 socket.emit('message', form);
@@ -417,7 +417,7 @@
         </div>
         <form id = "msgform">
             <div>
-                <input type="text" id = "chat_textbox" onkeypress="if( event.keyCode == 13 ){msgform.onsubmit();}" style = "position: relative; bottom: 415px; left: 10px; width: 400px; height: 30px; border-radius: 10px; border: 2px solid gray">
+                <input type="text" id = "chat_textbox" onkeypress="if( event.keyCode == 13 ){chatting_send();}" style = "position: relative; bottom: 415px; left: 10px; width: 400px; height: 30px; border-radius: 10px; border: 2px solid gray">
                 <input type="submit" id = "chat_button" value="전송" style = "position: relative; bottom: 415px; left: 5px; width: 60px; height: 36px;
                     background-color: lightblue; border: 2px solid gray; border-radius: 10px; color: white; font-size: 15px;">
             </div>
@@ -435,7 +435,7 @@
 
         msgform.onsubmit = function (e){
             e.preventDefault();
-            chatting_send();
+            // chatting_send();
         }
         /*
         socket.on('message', (msg) => { //message receive
@@ -447,6 +447,5 @@
     </script>
     <div class="footer">
         <input type="text" id = "chat_textbox01" onkeypress="if( event.keyCode == 13 ){chatting_receive();}" style = "width: 400px; height: 30px; border-radius: 10px; border: 2px solid gray">
-    </div>
 </body>
 </html>

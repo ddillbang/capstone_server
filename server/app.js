@@ -3,12 +3,20 @@ var app = express();
 var ejs = require('ejs');
 var session = require('express-session'); //session module;
 var MysqlStore = require('express-mysql-session')(session);
+const fs = require('fs');
 const db = require('./db');
-var fs = require('fs');
 
 const iosoc = require('express-socket.io-session');
 
-var server = require('http').createServer(app);
+const https_options = {
+	key: fs.readFileSync("/etc/letsencrypt/live/kmuob.duckdns.org/privkey.pem"),
+	cert: fs.readFileSync("/etc/letsencrypt/live/kmuob.duckdns.org/cert.pem"),
+	ca: fs.readFileSync("/etc/letsencrypt/live/kmuob.duckdns.org/chain.pem")
+};
+
+
+// var server = require('http').createServer(app);
+var server = require('https').createServer(https_options,app);
 global.server = server;
 
 
@@ -45,11 +53,22 @@ app.use(testdetail);
 
 app.use(iosoc(session, {autoSave : true}));
 
-
 app.set('view engine', 'ejs');
 app.set('views', './views');
 app.engine('html', ejs.renderFile);
+/*
+http_server.listen(3000, function(req, res, next){//http server for redirecting to https
+});
 
+app.get('/', function(req, res, next){//redirect if request on http
+	if(req.secure){
+		next();
+	}
+	else{
+		res.redirect("https://kmuob.duckdns.org:3001" + req.url);
+	}
+});
+*/
 server.listen(3000, function()
 {
     console.log("서버가동");

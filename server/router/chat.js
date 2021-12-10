@@ -32,6 +32,10 @@ router.post('/chat', function (req, res){
     
 })
 
+router.get('/detail3', function(req, res){
+    res.render('detail3.html');
+})
+
 var io = require('socket.io')(global.server);
 io.use(iosoc(session({
     secret: '1234@', //it can be same as cookie setting
