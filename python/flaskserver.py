@@ -1,8 +1,3 @@
-try:
-    import jpype
-    import jpype1
-except:
-    import jpype
 from flask_restful import Resource
 from flask_restful import reqparse
 from gensim import models
@@ -11,7 +6,7 @@ import pandas as pd
 from gensim.models.word2vec import Word2Vec
 from gensim.models import KeyedVectors
 import sys
-from konlpy.tag import Kkma
+from konlpy.tag import Okt
 import csv
 import numpy as np
 import requests
@@ -207,7 +202,7 @@ def init():
     k = KeyedVectors.load_word2vec_format('book_model_f.bin', binary=True)
     
 def ok(doc):
-    okt = Kkma()
+    okt = Okt()
     nouns = okt.nouns(doc)
     doc_nouns = ''
 
