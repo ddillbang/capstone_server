@@ -7,6 +7,8 @@ const xmltojs = require('xml-js');
 const CLIENT_ID = 'W12PsIX84oIcyfufTCCG';
 const CLIENT_SECRET = 'jO2h2HTVCh';
 
+var recomb2=[,],recomb3=[,],recomb4=[,],recomb5=[,];
+
 router.get('/', (req,res) =>{
     userrecom = {}
     if(req.session.user == undefined)

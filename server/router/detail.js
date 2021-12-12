@@ -89,6 +89,7 @@ var bookstore = {
 }
 
 
+
 router.get('/detail', (req,res) =>{
 
     const option = {
@@ -239,12 +240,11 @@ router.get('/detail', (req,res) =>{
             }, function(err7, res7, body7)
             {
                 var bd7 = JSON.parse(body7);
-                console.log(bd7)
 
 
                 request.get({
                     uri:'https://openapi.naver.com/v1/search/book_adv.xml',
-                    qs: {d_isbn : bd7["result"][0][0]},
+                    qs: {d_isbn : bd7["result"][0]},
                     headers : {
                         'X-Naver-Client-Id' : CLIENT_ID,
                         'X-Naver-Client-Secret' : CLIENT_SECRET
@@ -254,11 +254,16 @@ router.get('/detail', (req,res) =>{
                         var bodyconvert2 = xmltojs.xml2json(body9, {compact: true, spaces:4 });
                         let json2 = JSON.parse(bodyconvert2);
                         let jsonp2 = json2.rss.channel.item
-                        var recomb2 = [jsonp2.image._text, bd7["result"][0][0]]
-
+			try{
+                        recomb2 = [jsonp2.image._text, bd7["result"][0]]
+			}
+			catch(exception)
+			{
+				recomb2 = [,]
+			}
                         request.get({
                             uri:'https://openapi.naver.com/v1/search/book_adv.xml',
-                            qs: {d_isbn : bd7["result"][1][0]},
+                            qs: {d_isbn : bd7["result"][1]},
                             headers : {
                                 'X-Naver-Client-Id' : CLIENT_ID,
                                 'X-Naver-Client-Secret' : CLIENT_SECRET
@@ -269,11 +274,15 @@ router.get('/detail', (req,res) =>{
                             var bodyconvert3 = xmltojs.xml2json(body10, {compact: true, spaces:4 });
                             let json3 = JSON.parse(bodyconvert3);
                             let jsonp3 = json3.rss.channel.item
-                            var recomb3 = [jsonp3.image._text, bd7["result"][1][0]]
-
+			try{
+                            recomb3 = [jsonp3.image._text, bd7["result"][1]]
+			}
+				catch(exception){
+					recomb3=[,]
+				}
                             request.get({
                                 uri:'https://openapi.naver.com/v1/search/book_adv.xml',
-                                qs: {d_isbn : bd7["result"][2][0]},
+                                qs: {d_isbn : bd7["result"][2]},
                                 headers : {
                                 'X-Naver-Client-Id' : CLIENT_ID,
                                 'X-Naver-Client-Secret' : CLIENT_SECRET
@@ -283,8 +292,12 @@ router.get('/detail', (req,res) =>{
                                 var bodyconvert4 = xmltojs.xml2json(body11, {compact: true, spaces:4 });
                                 let json4 = JSON.parse(bodyconvert4);
                                 let jsonp4 = json4.rss.channel.item
-                                var recomb4 = [jsonp4.image._text, bd7["result"][2][0]]
-
+				    try{
+                                recomb4 = [jsonp4.image._text, bd7["result"][2]]
+				    }
+				    catch(exception){
+					    recomb4=[,]
+				    }
                                 db.query('select * from board WHERE isbn = ?',[req.query.isbn],
                                 
                                     function(err, result)
@@ -306,6 +319,7 @@ router.get('/detail', (req,res) =>{
                                     {
                                         usession = req.session
                                     }
+					 
                                         res.render('detail4.html', {dbdata : {dbre},data : {title, img, author, originprice} ,des : des, costinfo : {cost_info,cost_info2},price : price, offline : {ulList, ulList2}, bookstore : bookstore, recomb : {recomb2,recomb3, recomb4}, usession : usession})
                                     }
                                 )
