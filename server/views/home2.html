@@ -91,7 +91,7 @@
     <div id="modal" class="modal-overlay">
         <div class="modal-window">
             <div class="title">
-                <h2>모달</h2>
+                <h2>교재불러오기</h2>
             </div>
             <div class="close-area">X</div>
             <section id = "modal_inner">
@@ -148,7 +148,7 @@
                     table.innerHTML = ''
                     for(var index = 0; index < sd['result'].length; ++index)
                     {
-                        table.innerHTML += '<div>' +sd['result'][index]['name']+ '<br>'+ sd['result'][index]['book'] +'</div>'
+                        table.innerHTML += '<div style="border : 1px solid black">' +sd['result'][index]['name']+ '<br>'+ sd['result'][index]['book'] +'</div>'
                     }
                 }
             })
