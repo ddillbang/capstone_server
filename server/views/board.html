@@ -8,9 +8,75 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style>
+    .header{
+        width: 1100px;
+        height: 60px;
+        background-color: lightblue;
+        margin:0 auto;
+        margin-top: 0px;
+    }
+    
+    
+    .header h1{
+        color: white;
+        float: left;
+        line-height: 8px;
+        text-decoration: none;
+        display: block;
+        font-size: 2.2em;
+        font-weight: bold;
+    }
+    .header a{
+        text-decoration: none;
+        color: white;
+    }
+    
+    .menu{
+        float: right;
+        width: 500px;
+        height: 50px;
+    }
+    
+    .menu li{
+        float: left;
+        width: 25%;
+        list-style: none;
+        line-height: 28px;
+        color: white;
+        padding : 8px;
+    }
+    
+    .menu a{
+       color:white; 
+       text-decoration: none;
+    }
+
+    body{
+        padding:8px;
+    }
+    
+</style>
 </head>
 
+
 <body>
+
+
+    <div class="header" style = "padding : 8px">
+        <h1><a href="/">OWNBOOK</a></h1>
+        <ul class="menu">
+            <a href="/"><li>HOME</li></a>
+            <a href="/board/1"><li>게시판</li></a>
+            <a href="/chat"><li>CHAT</li></a>
+            <% if(usession.user){%>
+                <a href="/logout"><li>LOGOUT</li></a>
+                    <% } else{%>
+            <li><a href="/signin">LOGIN</a></li>
+            <% }%>            
+        </ul>
+    </div>
+    
 
 <div class="container">
 <h2>중고거래 게시판</h2>
