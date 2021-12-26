@@ -65,7 +65,7 @@
 </head>
 <body>
     <div class="header">
-        <h1>OWNBOOK</h1>
+	    <a href="/"><h1>OWNBOOK</h1></a>
         <ul class="menu">
             <a href="/"><li>HOME</li></a>
             <a href="/board/1"><li>게시판</li></a>
@@ -148,7 +148,7 @@
                     table.innerHTML = ''
                     for(var index = 0; index < sd['result'].length; ++index)
                     {
-                        table.innerHTML += '<div style="border : 1px solid black">' +sd['result'][index]['name']+ '<br>'+ sd['result'][index]['book'] +'</div>'
+                        table.innerHTML += '<div style="border : 1px solid black; margin-bottom : 10px;">' +sd['result'][index]['name']+ '<br>'+ sd['result'][index]['book'] +'</div>'
                     }
                 }
             })

@@ -23,7 +23,7 @@ var upload = multer({storage : storage, limits: {fileSize: 5 * 1024*1024}})
 router.post('/image', upload.single('file'), (req,res)=>{
 
     
-    res.send('http://localhost:3000/users/' + req.file.filename);
+    res.send('https://kmuob.duckdns.org:3000/users/' + req.file.filename);
     console.log(req.file);
 })
 
